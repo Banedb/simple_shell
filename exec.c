@@ -16,7 +16,7 @@ int cmdexe(char **argv)
 		exex = execve(cmd, argv, NULL);
 		if (exex == -1)
 		{
-		        if (errno == ENOENT)
+			if (errno == ENOENT)
 				printf("hsh: %s: command not found\n", cmd);
 			return (-1);
 		}
