@@ -51,11 +51,12 @@ int main(int argc, char **argv, char **envp)
 		argv[i] = NULL;
 		cmdexe(argv, envp);
 
-		/* check if command is "exit" */
 	}
 
 	free(user_input);
 	free(ui_copy);
 	(void)argc;
 	return (0);
+	/* Should I nullterminate argv? */
 }
+/* NB: Betty error: File has over 40 lines of code so will have to split */
