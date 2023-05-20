@@ -10,7 +10,7 @@
  */
 int main(int argc, char **argv, char **envp)
 {
-	char *prompt = "($) ", *user_input = NULL, *ui_copy = NULL, *token, *cmd;
+	char *prompt = "($) ", *user_input = NULL, *ui_copy = NULL, *token;
 	const char *delim = " \n";
 	int tcount, i;
 	size_t n = 0;
@@ -36,7 +36,7 @@ int main(int argc, char **argv, char **envp)
 		strcpy(ui_copy, user_input);
 		/* To get number of arguments entered by user */
 		token = strtok(ui_copy, delim);
-		cmd = token;
+
 		for (tcount = 1; token != NULL; tcount++)
 			token = strtok(NULL, delim);
 		argv = malloc(sizeof(char *) * tcount);
@@ -51,8 +51,6 @@ int main(int argc, char **argv, char **envp)
 		cmdexe(argv, envp);
 
 		/* check if command is "exit" */
-		if (strcmp(cmd, "exit") == 0)
-				break;
 	}
 
 	free(user_input);
