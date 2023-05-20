@@ -32,6 +32,8 @@ int cmdexe(char **argv, char **envp)
 			else
 				wait(NULL);
 		}
+		else if (strcmp(cmd, "exit") == 0)
+			exitShell();
 		else if (exex == -1)
 		{
 			printf("hsh: %s: command not found\n", cmd);
