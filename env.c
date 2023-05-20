@@ -5,8 +5,7 @@
  * @envStrings: array of pointer to strings storing
  * environment variable and its values
  */
-void
-env(char **envStrings)
+void env(char **envStrings)
 {
 	env_t *envs;
 	char **envp;
