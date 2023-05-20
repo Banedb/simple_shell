@@ -2,10 +2,11 @@
 /**
  * cmdexe - calls in the execve function to enable command execution
  * @argv: Arguments passed to function
- *
+ * @envp: an array of pointers to strings,
+ * storing environment varibles and their values
  * Return: 0 (Success)
  */
-int cmdexe(char **argv)
+int cmdexe(char **argv, char **envp)
 {
 	char *cmd = NULL, *cmdpath = NULL;
 	int exex = -1;
@@ -21,7 +22,7 @@ int cmdexe(char **argv)
 			pid = fork();
 			if (pid == 0)
 			{
-				exex = execve(cmdpath, argv, NULL);
+				exex = execve(cmdpath, argv, envp);
 			}
 			else if (pid == -1)
 			{
