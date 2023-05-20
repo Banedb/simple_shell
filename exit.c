@@ -4,7 +4,7 @@
  * exitShell - exit cmd implementation
  */
 
-void exitShell()
+void exitShell(void)
 {
 	printf("Exiting the custom shell...\n");
 	/*Add any cleanup or additional actions before exiting, if needed*/
