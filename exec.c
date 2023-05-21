@@ -22,7 +22,7 @@ int cmdexe(char **argv, char **envp)
 			pid = fork();
 			if (pid == 0)
 			{
-				exex = execve(cmdpath, argv, envp);
+				exex = execve(cmdpath, argv, getEnv(envp));
 			}
 			else if (pid == -1)
 			{

@@ -33,7 +33,7 @@ extern char **environ;
 int cmdexe(char **argv, char **envp);
 char *pathfinder(char *cmd);
 void read_args(char **argv);
-void env(char **envStrings);
+char **getEnv(char **envStrings);
 void exitShell(void);
 
 /************************************************
