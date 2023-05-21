@@ -48,6 +48,7 @@ int main(int argc, char **argv, char **envp)
 			token = strtok(NULL, delim);
 		}
 		argv[i] = NULL;
+		env(envp);
 		cmdexe(argv, envp);
 
 		/* check if command is "exit" */
