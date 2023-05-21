@@ -34,17 +34,22 @@ int cmdexe(char **argv, char **envp);
 char *pathfinder(char *cmd);
 void read_args(char **argv);
 void env(char **envStrings);
-void exitShell();
+void exitShell(void);
 
 /************************************************
  *			                        *
  *		Structure                       *
  *			                        *
  ************************************************/
-/* Allocate memory for the environment variables*/
-    typedef struct Env {
-        char *key;
-        char *val;
-    }env_t;
+/**
+ * struct Env - Allocate memory for the environment variables
+ * @key: environ variable
+ * @val: environ varaible value.
+ */
+typedef struct Env
+{
+	char *key;
+	char *val;
+} env_t;
 
 #endif
