@@ -5,12 +5,7 @@
  * @envStrings: array of pointer to strings storing
  * environment variable and its values
  */
-<<<<<<< HEAD
-int
-main(int argc, char **argv, char **envStrings)
-=======
 void env(char **envStrings)
->>>>>>> 5a48c80014127b77cfd717a99a8edd9673ee7a07
 {
 	env_t *envs;
 	char **envp;
@@ -25,7 +20,7 @@ void env(char **envStrings)
 	/*handle malloc failure*/
 	if (!envs)
 	{
-		return -1;
+		return;
 	}
 
 	/* Populate the environment variables array */
@@ -47,7 +42,7 @@ void env(char **envStrings)
 	envStrings = malloc(sizeof(char *) * envCount);
 	if (!envStrings)
 	{
-		return -1;
+		return;
 	}
 
 	while ((i = 0) < envCount)
@@ -75,8 +70,4 @@ void env(char **envStrings)
 	}
 	free(envs);
 	free(envStrings);
-	(void)(argc);
-	(void)(argv);
-
-	return 0;
 }
