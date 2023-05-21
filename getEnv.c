@@ -1,6 +1,6 @@
 #include "shell.h"
 
-**
+/**
  * env - enviroment implementation
  * @envStrings: array of pointer to strings storing
  * environment variable and its values
