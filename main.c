@@ -23,6 +23,7 @@ int main(int argc, char **argv, char **envp)
 		/* Handling EOF and errors of getline function */
 		if (gret < 0)
 		{
+			printf("exit\n");
 			free(user_input);
 			return (-1);
 		}
@@ -51,11 +52,12 @@ int main(int argc, char **argv, char **envp)
 		env(envp);
 		cmdexe(argv, envp);
 
-		/* check if command is "exit" */
 	}
 
 	free(user_input);
 	free(ui_copy);
 	(void)argc;
 	return (0);
+	/* Should I nullterminate argv? */
 }
+/* NB: Betty error: File has over 40 lines of code so will have to split */

@@ -5,8 +5,12 @@
  * @envStrings: array of pointer to strings storing
  * environment variable and its values
  */
+<<<<<<< HEAD
 int
 main(int argc, char **argv, char **envStrings)
+=======
+void env(char **envStrings)
+>>>>>>> 5a48c80014127b77cfd717a99a8edd9673ee7a07
 {
 	env_t *envs;
 	char **envp;
