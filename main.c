@@ -23,7 +23,6 @@ int main(int argc, char **argv, char **envp)
 		/* Handling EOF and errors of getline function */
 		if (gret < 0)
 		{
-			printf("exit\n");
 			free(user_input);
 			return (-1);
 		}
