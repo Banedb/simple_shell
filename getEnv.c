@@ -1,19 +1,21 @@
 #include "shell.h"
-
+env_t *envs;
+int envCount;
 /**
- * env - enviroment implementation
+ * getEnv - enviroment implementation
  * @envStrings: array of pointer to strings storing
  * environment variable and its values
+ * Return: array of pointers to string, containing
+ * environ variables and theri values.
  */
 
 char **getEnv(char **envStrings)
 {
-	env_t *envs;
 	char **envp;
-	int i = 0, envCount = 0, len;
+	int i = 0;
 
+	envCount = 0;
 	envp = environ;
-
 	/* get number of environ variables */
 	for (; *envp != NULL; )
 	{
@@ -21,8 +23,7 @@ char **getEnv(char **envStrings)
 		envCount++;
 	}
 
-	envs = malloc(sizeof(struct Env) * envCount);
-
+	envs = malloc(sizeof(struct env) * envCount);
 	/* Populate the environment variables array */
 	envp = environ;
 	for ( ; i < envCount; i++)
@@ -39,24 +40,28 @@ char **getEnv(char **envStrings)
 
 	/* Store the environ variables in an array of pointers to strings */
 	i = 0;
-	while (i < envCount)
+	while (*envp != NULL)
 	{
 		/*allocate mem for '=' and null terminator, hence + 2*/
-		len = strlen(envs[i].key) + strlen(envs[i].val) + 2;
-		envStrings[i] = malloc(sizeof(char) * len);
-		snprintf(envStrings[i], len, "%s=%s", envs[i].key, envs[i].val);
-		i++;
+		printf("%s\n", *envp);
+		envp++;
 	}
-
 	/* set last element of array: NULL*/
 	envStrings[envCount] = NULL;
 
 	/* avoid mem leaks, free allocated mem*/
 	for (i = 0; i < envCount; i++)
 		free(envs[i].key);
-
 	free(envs);
 
 	return (envStrings);
 }
 /*Over 40 lines*/
+
+/**
+ * we wanna have another function that will have access to the
+ * use _puts instead of printf
+ * implement my own strbdup
+*/
+
+

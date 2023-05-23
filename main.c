@@ -34,7 +34,7 @@ int main(int argc, char **argv, char **envp)
 			printf("Malloc for Copy of User-Input Failed\n");
 			return (-1);
 		}
-		strcpy(ui_copy, user_input);
+		_strcpy(ui_copy, user_input);
 		/* To get number of arguments entered by user */
 		token = strtok(ui_copy, delim);
 

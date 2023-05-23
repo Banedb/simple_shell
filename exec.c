@@ -32,8 +32,13 @@ int cmdexe(char **argv, char **envp)
 			else
 				wait(NULL);
 		}
-		else if (strcmp(cmd, "exit") == 0)
+		else if (_strcmp(cmd, "exit") == 0)
 			exitShell();
+		else if (_strcmp(cmd, "cd") == 0)
+		{
+			char *path = _cd(argv[1]);
+			chdir(path);
+		}
 		else if (exex == -1)
 		{
 			printf("hsh: %s: command not found\n", cmd);
@@ -48,3 +53,4 @@ int cmdexe(char **argv, char **envp)
 /* NB: Handle error for complex charaters being input */
 /* ie bash substitution failed message */
 /* Remember to pass environ to execve */
+/* use _put instead of printf*/

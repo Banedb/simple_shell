@@ -35,6 +35,9 @@ char *pathfinder(char *cmd);
 void read_args(char **argv);
 char **getEnv(char **envStrings);
 void exitShell(void);
+char *_cd(char *argv);
+int _strcmp(char *s1, char *s2);
+char *_strcpy(char *dest, char *src);
 
 /************************************************
  *			                        *
@@ -46,10 +49,25 @@ void exitShell(void);
  * @key: environ variable
  * @val: environ varaible value.
  */
-typedef struct Env
+typedef struct env
 {
 	char *key;
 	char *val;
 } env_t;
+
+/**
+ * struct list_s - singly linked list
+ * @key: string - (malloc'ed string)
+ * @val: length of the string
+ * @next: points to the next node
+ *
+ * Description: singly linked list node structure
+ */
+typedef struct list_s
+{
+	char *key;
+	char *val;
+	struct list_s *next;
+} list_t;
 
 #endif
