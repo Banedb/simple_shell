@@ -22,6 +22,7 @@
  *			                        *
  ************************************************/
 #define MAX_COMMAND_LENGTH 1024
+#define MAX_PATH_LENGTH 1024
 extern char **environ;
 
 
@@ -35,9 +36,10 @@ char *pathfinder(char *cmd);
 void read_args(char **argv);
 char **getEnv(char **envStrings);
 void exitShell(void);
-char *_cd(char *argv);
+char *_cd(const char *path);
 int _strcmp(char *s1, char *s2);
 char *_strcpy(char *dest, char *src);
+void cd(const char *path);
 
 /************************************************
  *			                        *
