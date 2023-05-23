@@ -10,9 +10,8 @@
  */
 char *_cd(const char *path)
 {
-	char **envp = environ;
+	char **envp = environ, currentPath[MAX_PATH_LENGTH], *prevDir;
 	int i = 0, envCount = 0;
-	char currentPath[MAX_PATH_LENGTH];
 
 	/* get number of environ variables */
 	for (; *envp != NULL; )
@@ -22,7 +21,7 @@ char *_cd(const char *path)
 	}
 	/* Populate the environment variables array */
 	envp = environ;
-	for ( ; i < envCount; i++)
+	for ( ; i < envCount; i++, envp++)
 	{
 		char *env = *envp;
 		int j = 0;
@@ -34,8 +33,11 @@ char *_cd(const char *path)
 			if (_strcmp(strndup(env, j), "HOME") == 0)
 				return (env + j + 1);
 		}
-		envp++;
+		else if (_strcmp(strndup(env, j), "PWD") == 0)
+			prevDir = env + j + 1;
 	}
+	if (_strcmp(strdup(path), "-") == 0)
+		path = prevDir;
 
 	if (chdir(path) != 0)
 	{
@@ -51,5 +53,3 @@ char *_cd(const char *path)
 
 	return (strdup(path));
 }
-
-
