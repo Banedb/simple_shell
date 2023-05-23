@@ -36,8 +36,13 @@ int cmdexe(char **argv, char **envp)
 			exitShell();
 		else if (_strcmp(cmd, "cd") == 0)
 		{
-			char *path = _cd(argv[1]);
-			chdir(path);
+			if (!argv[1])
+			{
+				char *path = _cd(argv[1]);
+				chdir(path);
+			}
+			else
+				_cd(argv[1]);
 		}
 		else if (exex == -1)
 		{
