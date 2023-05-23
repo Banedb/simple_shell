@@ -46,7 +46,8 @@ int cmdexe(char **argv, char **envp)
 		}
 		else if (exex == -1)
 		{
-			printf("hsh: %s: command not found\n", cmd);
+			printf("./hsh: 1: %s: not found\n", cmd);
+			/* printf("hsh: %s: not found\n", cmd);*/
 			return (-1);
 		}
 	}
