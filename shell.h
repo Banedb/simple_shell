@@ -31,7 +31,7 @@ extern char **environ;
  *		PROTOTYPES                      *
  *			                        *
  ************************************************/
-int cmdexe(char **argv, char **envp);
+int cmdexe(char **argv, char **envp, int ln);
 char *pathfinder(char *cmd);
 void read_args(char **argv);
 char **getEnv(char **envStrings);

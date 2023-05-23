@@ -6,9 +6,9 @@
  * storing environment varibles and their values
  * Return: 0 (Success)
  */
-int cmdexe(char **argv, char **envp)
+int cmdexe(char **argv, char **envp, int ln)
 {
-	char *cmd = NULL, *cmdpath = NULL;
+	char *cmd = NULL, *cmdpath = NULL, *path;
 	int exex = -1;
 	pid_t pid;
 
@@ -23,11 +23,16 @@ int cmdexe(char **argv, char **envp)
 			if (pid == 0)
 			{
 				exex = execve(cmdpath, argv, getEnv(envp));
+				if (exex == -1)
+				{
+					fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd);
+					exit(127);
+				}
 			}
 			else if (pid == -1)
 			{
-				perror("Error:");
-				return (1);
+				perror("Error");
+				exit(EXIT_FAILURE);
 			}
 			else
 				wait(NULL);
@@ -38,7 +43,7 @@ int cmdexe(char **argv, char **envp)
 		{
 			if (!argv[1])
 			{
-				char *path = _cd(argv[1]);
+				path = _cd(argv[1]);
 				chdir(path);
 			}
 			else
@@ -46,8 +51,7 @@ int cmdexe(char **argv, char **envp)
 		}
 		else if (exex == -1)
 		{
-			printf("./hsh: 1: %s: not found\n", cmd);
-			/* printf("hsh: %s: not found\n", cmd);*/
+			fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd);
 			return (-1);
 		}
 	}
@@ -58,5 +62,4 @@ int cmdexe(char **argv, char **envp)
 }
 /* NB: Handle error for complex charaters being input */
 /* ie bash substitution failed message */
-/* Remember to pass environ to execve */
 /* use _put instead of printf*/

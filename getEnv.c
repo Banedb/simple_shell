@@ -63,5 +63,3 @@ char **getEnv(char **envStrings)
  * use _puts instead of printf
  * implement my own strbdup
 */
-
-

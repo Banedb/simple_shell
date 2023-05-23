@@ -12,7 +12,7 @@ int main(int argc, char **argv, char **envp)
 {
 	char *prompt = "($) ", *user_input = NULL, *ui_copy = NULL, *token;
 	const char *delim = " \n";
-	int tcount, i;
+	int tcount, i, ln = 1;
 	size_t n = 0;
 	ssize_t gret;
 
@@ -48,7 +48,8 @@ int main(int argc, char **argv, char **envp)
 			token = strtok(NULL, delim);
 		}
 		argv[i] = NULL;
-		cmdexe(argv, envp);
+		cmdexe(argv, envp, ln);
+		ln++;
 
 	}
 
