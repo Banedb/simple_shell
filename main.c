@@ -10,8 +10,7 @@
  */
 int main(int argc, char **argv, char **envp)
 {
-	char *prompt = "($) ", *user_input = NULL, *ui_copy = NULL, *token;
-	const char *delim = " \n";
+	char *prompt = "($) ", *user_input = NULL, *ui_copy, *token, *delim = " \n";
 	int tcount, i, ln = 1;
 	size_t n = 0;
 	ssize_t gret;
@@ -20,13 +19,11 @@ int main(int argc, char **argv, char **envp)
 	{
 		_puts(prompt);
 		gret = getline(&user_input, &n, stdin);
-		/* Handling EOF and errors of getline function */
 		if (gret < 0)
 		{
 			free(user_input);
 			return (-1);
 		}
-		/* Making copy to preserve user_input from strtok splits */
 		ui_copy = malloc(sizeof(char) * gret);
 		if (ui_copy == NULL)
 		{
@@ -34,13 +31,10 @@ int main(int argc, char **argv, char **envp)
 			return (-1);
 		}
 		_strcpy(ui_copy, user_input);
-		/* To get number of arguments entered by user */
 		token = strtok(ui_copy, delim);
-
 		for (tcount = 1; token != NULL; tcount++)
 			token = strtok(NULL, delim);
 		argv = malloc(sizeof(char *) * tcount);
-		/* To assign the arguments passed by user to array argv */
 		token = strtok(user_input, delim);
 		for (i = 0; token != NULL; i++)
 		{
@@ -52,11 +46,9 @@ int main(int argc, char **argv, char **envp)
 		ln++;
 
 	}
-
 	free(user_input);
 	free(ui_copy);
 	(void)argc;
 	return (0);
-	/* Should I nullterminate argv? */
 }
 /* NB: Betty error: File has over 40 lines of code so will have to split */
