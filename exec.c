@@ -9,7 +9,7 @@
  */
 int cmdexe(char **argv, char **envp, int ln)
 {
-	char *cmd = NULL, *cmdpath = NULL, *path;
+	char *cmd = NULL, *cmdpath = NULL;
 	int exex = -1;
 	pid_t pid;
 

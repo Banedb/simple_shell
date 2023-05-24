@@ -46,7 +46,6 @@ int main(int argc, char **argv, char **envp)
 		ln++;
 
 	}
-	free(user_input);
 	free(ui_copy);
 	(void)argc;
 	return (0);
