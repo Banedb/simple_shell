@@ -30,13 +30,13 @@ char *_cd(const char *path)
 			j++;
 		if (!path)
 		{
-			if (_strcmp(strndup(env, j), "HOME") == 0)
+			if (_strcmp(_strndup(env, j), "HOME") == 0)
 				return (env + j + 1);
 		}
-		else if (_strcmp(strndup(env, j), "PWD") == 0)
+		else if (_strcmp(_strndup(env, j), "PWD") == 0)
 			prevDir = env + j + 1;
 	}
-	if (_strcmp(strdup(path), "-") == 0)
+	if (_strcmp(_strdup(path), "-") == 0)
 		path = prevDir;
 	if (chdir(path) != 0)
 	{
@@ -48,5 +48,5 @@ char *_cd(const char *path)
 		fprintf(stderr, "cd: Failed to get current directory\n");
 		return (NULL);
 	}
-	return (strdup(path));
+	return (_strdup(path));
 }

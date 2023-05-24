@@ -34,13 +34,19 @@ extern char **environ;
 int cmdexe(char **argv, char **envp, int ln);
 char *pathfinder(char *cmd);
 void read_args(char **argv);
-char **getEnv(char **envStrings);
+char **_env(char **envStrings);
 void exitShell(void);
 char *_cd(const char *path);
 int _strcmp(char *s1, char *s2);
 char *_strcpy(char *dest, char *src);
 void cd(const char *path);
 void _puts(char *str);
+void readArg(char **argv);
+char *_strndup(const char *str, size_t n);
+size_t _strlen(char *s);
+char *_strdup(const char *str);
+char *_strcat(char *dest, char *src);
+char *_getenv(const char *name);
 
 /************************************************
  *			                        *
@@ -48,7 +54,7 @@ void _puts(char *str);
  *			                        *
  ************************************************/
 /**
- * struct Env - Allocate memory for the environment variables
+ * struct env - Allocate memory for the environment variables
  * @key: environ variable
  * @val: environ varaible value.
  */

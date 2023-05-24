@@ -23,7 +23,7 @@ int cmdexe(char **argv, char **envp, int ln)
 			pid = fork();
 			if (pid == 0)
 			{
-				exex = execve(cmdpath, argv, getEnv(envp));
+				exex = execve(cmdpath, argv, _env(envp));
 				if (exex == -1)
 				{
 					fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd);

@@ -11,20 +11,20 @@ char *pathfinder(char *cmd)
 	int cmdl, pathl;
 	struct stat temp;
 
-	path = getenv("PATH");
+	path = _getenv("PATH");
 	if (path)
 	{
-		pathcopy = strdup(path);
-		cmdl = strlen(cmd);
+		pathcopy = _strdup(path);
+		cmdl = _strlen(cmd);
 		pt = strtok(pathcopy, ":");
 		while (pt != NULL)
 		{
-			pathl = strlen(pt);
+			pathl = _strlen(pt);
 			cmdpath = malloc(cmdl + pathl + 2);
-			strcpy(cmdpath, pt);
-			strcat(cmdpath, "/");
-			strcat(cmdpath, cmd);
-			strcat(cmdpath, "\0");
+			_strcpy(cmdpath, pt);
+			_strcat(cmdpath, "/");
+			_strcat(cmdpath, cmd);
+			_strcat(cmdpath, "\0");
 			if (stat(cmdpath, &temp) == 0)
 			{
 				free(pathcopy);
