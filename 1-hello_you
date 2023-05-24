@@ -1,0 +1,3 @@
+#!/bin/bash
+echo hello $USER
+ls -al && mkdir karabo

@@ -3,6 +3,7 @@
  * cmdexe - calls in the execve function to enable command execution
  * @argv: Arguments passed to function
  * @envp: an array of pointers to strings,
+ * @ln: err
  * storing environment varibles and their values
  * Return: 0 (Success)
  */

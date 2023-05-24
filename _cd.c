@@ -38,18 +38,15 @@ char *_cd(const char *path)
 	}
 	if (_strcmp(strdup(path), "-") == 0)
 		path = prevDir;
-
 	if (chdir(path) != 0)
 	{
 		fprintf(stderr, "cd: Failed to change directory to %s\n", path);
 		return (NULL);
 	}
-
 	if (getcwd(currentPath, sizeof(currentPath)) == NULL)
 	{
 		fprintf(stderr, "cd: Failed to get current directory\n");
 		return (NULL);
 	}
-
 	return (strdup(path));
 }
