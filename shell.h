@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <stdarg.h>
 
 /************************************************
  *			                        *
@@ -47,6 +48,10 @@ size_t _strlen(char *s);
 char *_strdup(const char *str);
 char *_strcat(char *dest, char *src);
 char *_getenv(const char *name);
+int _fprintf(int fd, const char *format, ...);
+void reverse_string(char *str, int length);
+int int_to_string(int num, char *buffer);
+
 
 /************************************************
  *			                        *
