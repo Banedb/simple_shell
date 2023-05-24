@@ -40,6 +40,7 @@ char *_cd(const char *path);
 int _strcmp(char *s1, char *s2);
 char *_strcpy(char *dest, char *src);
 void cd(const char *path);
+void _puts(char *str);
 
 /************************************************
  *			                        *
