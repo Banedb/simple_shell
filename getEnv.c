@@ -38,7 +38,7 @@ char **getEnv(char **envStrings)
 	while (*envp != NULL)
 	{
 		/*allocate mem for '=' and null terminator, hence + 2*/
-		printf("%s\n", *envp);
+		_puts(*envp);
 		envp++;
 	}
 	/* set last element of array: NULL*/

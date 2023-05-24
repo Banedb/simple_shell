@@ -18,7 +18,7 @@ int main(int argc, char **argv, char **envp)
 
 	for (;;)
 	{
-		printf("%s ", prompt);
+		_puts(prompt);
 		gret = getline(&user_input, &n, stdin);
 		/* Handling EOF and errors of getline function */
 		if (gret < 0)
@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **envp)
 		ui_copy = malloc(sizeof(char) * gret);
 		if (ui_copy == NULL)
 		{
-			printf("Malloc for Copy of User-Input Failed\n");
+			_puts("Malloc for Copy of User-Input Failed\n");
 			return (-1);
 		}
 		_strcpy(ui_copy, user_input);
