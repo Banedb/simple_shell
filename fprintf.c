@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * _fprintf - function writes formatted output
  * to the specified file descriptor fd.
@@ -7,6 +6,7 @@
  * @format: The format string specifying the output format.
  * Return: number of bytes written on success, or -1 if an error occurs.
 */
+
 int _fprintf(int fd, const char *format, ...)
 {
 	va_list args;
@@ -14,12 +14,15 @@ int _fprintf(int fd, const char *format, ...)
 	int bytes_written = 0;
 
 	va_start(args, format);
-	for ( ; *c != '\0'; c++)
+	while (*c != '\0')
 	{
 		if (*c == '%')
 		{
+			/* Handle format specifier*/
+			c++;
 			if (*c == 'd')
 			{
+				/* Format and write integer argument*/
 				char buffer[32];
 				int num = va_arg(args, int), length = int_to_string(num, buffer);
 				ssize_t result = write(fd, buffer, length);
@@ -30,6 +33,7 @@ int _fprintf(int fd, const char *format, ...)
 			}
 			else if (*c == 's')
 			{
+				/* Format and write string argument*/
 				char *str = va_arg(args, char *);
 				ssize_t result = write(fd, str, _strlen(str));
 
@@ -37,15 +41,18 @@ int _fprintf(int fd, const char *format, ...)
 					return (-1);
 				bytes_written += result;
 			}
+			/* Add more format specifiers as needed*/
 		}
 		else
 		{
+			/* Write normal characters*/
 			ssize_t result = write(fd, c, 1);
 
 			if (result < 0)
 				return (-1);
 			bytes_written += result;
 		}
+		c++;
 	}
 	va_end(args);
 	return (bytes_written);
@@ -75,12 +82,13 @@ int int_to_string(int num, char *buffer)
 		num = -num;
 	}
 
-	for ( ; num != 0; num /= 10)
+	while (num != 0)
 	{
 		int digit = num % 10;
 
 		buffer[length] = '0' + digit;
 		length++;
+		num /= 10;
 	}
 
 	if (is_negative)
@@ -105,11 +113,14 @@ void reverse_string(char *str, int length)
 {
 	int start = 0, end = length - 1;
 
-	for ( ; start < end; start++, end--)
+	while (start < end)
 	{
 		char temp = str[start];
 
 		str[start] = str[end];
 		str[end] = temp;
+
+		start++;
+		end--;
 	}
 }
