@@ -12,10 +12,12 @@ int main(int argc, char **argv, char **envp)
 {
 	char *prompt = "($) ", *user_input = NULL, *ui_copy = NULL, *token;
 	const char *delim = " \n";
-	int tcount, i, ln = 1;
+	int tcount, i;
 	size_t n = 0;
 	ssize_t gret;
 
+	count = 1;
+	name = argv[0];
 	for (;;)
 	{
 		_puts(prompt);
@@ -48,8 +50,8 @@ int main(int argc, char **argv, char **envp)
 			token = strtok(NULL, delim);
 		}
 		argv[i] = NULL;
-		cmdexe(argv, envp, ln);
-		ln++;
+		cmdexe(argv, envp);
+		count++;
 
 	}
 
