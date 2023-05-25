@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
  * numdl - counts number digits
- * @num: Integer
+ * @n: Integer
  *
  * Return: number of digits
  */

@@ -36,6 +36,7 @@ char *name;
 
 char *cmdnf(char **argv);
 int cmdexe(char **argv, char **envp);
+void _fork(char **argv, char **envp);
 char *pathfinder(char *cmd);
 void read_args(char **argv);
 char **_env(char **envStrings);
@@ -56,6 +57,8 @@ void reverse_string(char *str, int length);
 int int_to_string(int num, char *buffer);
 int numdl(int n);
 char *_itoa(int n);
+char **splitui(char *user_input);
+char *readui();
 
 /************************************************
  *			                        *

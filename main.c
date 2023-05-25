@@ -61,4 +61,3 @@ int main(int argc, char **argv, char **envp)
 	return (0);
 	/* Should I nullterminate argv? */
 }
-/* NB: Betty error: File has over 40 lines of code so will have to split */
