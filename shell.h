@@ -51,6 +51,8 @@ char *_getenv(const char *name);
 int _fprintf(int fd, const char *format, ...);
 void reverse_string(char *str, int length);
 int int_to_string(int num, char *buffer);
+char *get_path(void);
+int execute(char **argv);
 
 
 /************************************************
