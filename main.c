@@ -48,7 +48,7 @@ int main(int argc, char **argv, char **envp)
 			token = strtok(NULL, delim);
 		}
 		argv[i] = NULL;
-		cmdexe(argv, envp, ln);
+		execute(argv);
 		ln++;
 
 	}
@@ -56,6 +56,7 @@ int main(int argc, char **argv, char **envp)
 	free(user_input);
 	free(ui_copy);
 	(void)argc;
+	(void)envp;
 	return (0);
 	/* Should I nullterminate argv? */
 }
