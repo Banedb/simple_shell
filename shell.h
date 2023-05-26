@@ -25,18 +25,14 @@
 #define MAX_COMMAND_LENGTH 1024
 #define MAX_PATH_LENGTH 1024
 extern char **environ;
-/*Global Variables */
-int count;
-char *name;
+
+
 /************************************************
  *			                        *
  *		PROTOTYPES                      *
  *			                        *
  ************************************************/
-
-char *cmdnf(char **argv);
-int cmdexe(char **argv, char **envp);
-void _fork(char **argv, char **envp);
+int cmdexe(char **argv, char **envp, int ln);
 char *pathfinder(char *cmd);
 void read_args(char **argv);
 char **_env(char **envStrings);
@@ -55,10 +51,7 @@ char *_getenv(const char *name);
 int _fprintf(int fd, const char *format, ...);
 void reverse_string(char *str, int length);
 int int_to_string(int num, char *buffer);
-int numdl(int n);
-char *_itoa(int n);
-char **splitui(char *user_input);
-char *readui();
+
 
 /************************************************
  *			                        *
