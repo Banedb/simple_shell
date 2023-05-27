@@ -41,7 +41,10 @@ int cmdexe(char **argv, char **envp, int ln)
 				_cd(argv[1]);
 		}
 		else if (exex == -1)
-			fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd), return (-1);
+		{
+			fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd);
+			return (-1);
+		}
 	}
 	else
 		return (-1);

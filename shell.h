@@ -25,6 +25,8 @@
 #define MAX_COMMAND_LENGTH 1024
 #define MAX_PATH_LENGTH 1024
 extern char **environ;
+#define MAX_TOKENS 100
+#define MAX_TOKEN_LENGTH 50
 
 
 /************************************************
@@ -51,6 +53,7 @@ char *_getenv(const char *name);
 int _fprintf(int fd, const char *format, ...);
 void reverse_string(char *str, int length);
 int int_to_string(int num, char *buffer);
+char** tokenizeLine(char* line);
 
 
 /************************************************

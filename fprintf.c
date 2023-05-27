@@ -46,9 +46,11 @@ int _fprintf(int fd, const char *format, ...)
 			if (result < 0)
 				return (-1);
 			bytes_written += result;
-		}, c++;
+		}
+		c++;
 	}
-	va_end(args), return (bytes_written);
+	va_end(args);
+	return (bytes_written);
 }
 
 /**
