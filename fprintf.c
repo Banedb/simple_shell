@@ -18,11 +18,9 @@ int _fprintf(int fd, const char *format, ...)
 	{
 		if (*c == '%')
 		{
-			/* Handle format specifier*/
 			c++;
 			if (*c == 'd')
 			{
-				/* Format and write integer argument*/
 				char buffer[32];
 				int num = va_arg(args, int), length = int_to_string(num, buffer);
 				ssize_t result = write(fd, buffer, length);
@@ -33,7 +31,6 @@ int _fprintf(int fd, const char *format, ...)
 			}
 			else if (*c == 's')
 			{
-				/* Format and write string argument*/
 				char *str = va_arg(args, char *);
 				ssize_t result = write(fd, str, _strlen(str));
 
@@ -41,21 +38,17 @@ int _fprintf(int fd, const char *format, ...)
 					return (-1);
 				bytes_written += result;
 			}
-			/* Add more format specifiers as needed*/
 		}
 		else
 		{
-			/* Write normal characters*/
 			ssize_t result = write(fd, c, 1);
 
 			if (result < 0)
 				return (-1);
 			bytes_written += result;
-		}
-		c++;
+		}, c++;
 	}
-	va_end(args);
-	return (bytes_written);
+	va_end(args), return (bytes_written);
 }
 
 /**

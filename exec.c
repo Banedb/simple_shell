@@ -15,8 +15,7 @@ int cmdexe(char **argv, char **envp, int ln)
 
 	if (argv && argv[0])
 	{
-		cmd = argv[0];
-		cmdpath = pathfinder(cmd);
+		cmd = argv[0], cmdpath = pathfinder(cmd);
 		/* To fork only when command exists */
 		if (cmdpath != NULL)
 		{
@@ -25,16 +24,10 @@ int cmdexe(char **argv, char **envp, int ln)
 			{
 				exex = execve(cmdpath, argv, _env(envp));
 				if (exex == -1)
-				{
-					fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd);
-					exit(127);
-				}
+					fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd), exit(127);
 			}
 			else if (pid == -1)
-			{
-				perror("Error");
-				exit(EXIT_FAILURE);
-			}
+				perror("Error"), exit(EXIT_FAILURE);
 			else
 				wait(NULL);
 		}
@@ -43,21 +36,14 @@ int cmdexe(char **argv, char **envp, int ln)
 		else if (_strcmp(cmd, "cd") == 0)
 		{
 			if (!argv[1])
-			{
-				path = _cd(argv[1]);
-				chdir(path);
-			}
+				path = _cd(argv[1]), chdir(path);
 			else
 				_cd(argv[1]);
 		}
 		else if (exex == -1)
-		{
-			fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd);
-			return (-1);
-		}
+			fprintf(stderr, "./hsh: %d: %s: not found\n", ln, cmd), return (-1);
 	}
 	else
-		/* Handle when nothing is input eg just enter */
 		return (-1);
 	return (exex);
 }
