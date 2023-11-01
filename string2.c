@@ -92,13 +92,20 @@ char *myitoa(int num)
 	str[digits] = '\0';
 	return (str);
 }
-
+/**
+ * mygetc - custom getc
+ * @fd: file descriptor
+ *
+ * Return: gotten char
+ */
 int mygetc(int fd)
 {
 	static char buffer[BUFFER_SIZE];
-	static size_t pos = 0;
-	static size_t size = 0;
+	static size_t;
+	static size_t;
 
+	pos = 0;
+	size = 0;
 	if (pos >= size)
 	{
 		size = read(fd, buffer, BUFFER_SIZE);

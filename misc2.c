@@ -9,8 +9,7 @@
  */
 ssize_t _getline(char **lineptr, size_t *n, int fd)
 {
-	size_t pos = 0;
-	size_t new_size;
+	size_t pos = 0, new_size;
 	char *new_line;
 	int c;
 
@@ -19,7 +18,6 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 		errno = EINVAL;
 		return (-1);
 	}
-
 	if (*lineptr == NULL)
 	{
 		*lineptr = malloc(128);
@@ -27,7 +25,6 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 			return (-1);
 		*n = 128;
 	}
-
 	while ((c = mygetc(fd)) != EOF)
 	{
 		if (pos + 1 >= *n)
@@ -39,19 +36,15 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 			*lineptr = new_line;
 			*n = new_size;
 		}
-
 		(*lineptr)[pos++] = c;
-
 		if (c == '\n')
 		{
 			(*lineptr)[pos] = '\0';
 			return (pos);
 		}
 	}
-
 	if (pos == 0)
 		return (-1);
-
 	(*lineptr)[pos] = '\0';
 	return (pos);
 }
