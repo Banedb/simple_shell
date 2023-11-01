@@ -17,10 +17,9 @@ int run_input(void)
 	/*printf("count1 is %d\n", count);*/
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, prompt, 2);
-	while ((charc = getline(&user_input, &n, stdin)) != -1)
-	{
-	/*charc = _getline(&user_input, &n, STDIN_FILENO);*/
-	/*printf("count2 is %d\n", count);*/
+	while ((charc = _getline(&user_input, &n, STDIN_FILENO)) != -1)
+	{/*printf("count2 is %d\n", count);*/
+		is_absolute_path = 0;
 		if (user_input[charc - 1] == '\n')
 			user_input[charc - 1] = '\0';
 		count++;
@@ -32,7 +31,8 @@ int run_input(void)
 	}
 	if (user_input)
 		free(user_input);
-	write(STDERR_FILENO, "\n", 2);
+	if (isatty(STDIN_FILENO))
+		write(STDERR_FILENO, "\n", 2);
 	/*printf("count7 is %d\n", count);*/
 	exit(exit_status);
 }
@@ -73,7 +73,11 @@ int tokenizer(char *line)
 		token = _strtok(NULL, delim);
 	}
 	token_array[tcount] = NULL;
+	for (tcount = 0; token_array[tcount] != NULL; tcount++)
+		printf("token_array[%d] = %s\n", tcount, token_array[tcount]);
 	exit_status = cmdexe(token_array, envp);
+	/*for (tcount = 0; token_array[tcount] != NULL; tcount++)*/
+	/*printf("token_array2[%d] = %s\n", tcount, token_array[tcount]);*/
 	free_args(token_array);
 	return (exit_status);
 }

@@ -30,32 +30,33 @@ int cmdexe(char **argv, char **envp)
 
 int exe_ext_cmd(char **argv, char **envp)
 {
-	char *cmd = _which(argv[0]);
-	int exex = -1, exit_status = 0;
+	char *cmdpath = _which(argv[0]);
+	int exit_status = 0;
 	pid_t pid;
 
-	if (cmd != NULL) /* fork only when command exists */
+	if (cmdpath != NULL) /* fork only when command exists */
 	{
 		pid = fork();
 		if (pid == 0)
-		{
-			exex = execve(cmd, argv, _env(envp));
-			if (exex == -1)
+		{/*child process */
+			exit_status = execve(cmdpath, argv, _env(envp));
+			if (exit_status == -1)
 			{
-				free(cmd);
+				free(cmdpath);
 				perror("execve");
 				return (-1);
 			}
 		}
 		else if (pid == -1)/* fork failed */
 		{
-			free(cmd);
+			free(cmdpath);
 			perror("fork");
 			return (-1);
 		}
 		else
 		{/* parent process */
-			free(cmd);
+			if (is_absolute_path)
+				free(cmdpath);
 			return (parent_proc(pid, argv));
 		}
 	}
@@ -87,7 +88,7 @@ int parent_proc(pid_t pid, char **argv)
 			err_gen(argv, exit_status);
 	}
 	else
-	{
+	{/* child process did not exit normally */
 		exit_status = 2;
 		perror("error");
 		errno = 2;

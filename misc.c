@@ -45,10 +45,7 @@ void free_args(char **args)
 
 	{
 		for (i = 0; args[i] != NULL; i++)
-		{
-			if (i != 0)
-				free(args[i]);
-		}
+			free(args[i]);
 		if (args)
 			free(args);
 	}

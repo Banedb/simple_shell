@@ -69,6 +69,7 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /* global variables */
 int hist; /* history counter */
+int is_absolute_path;
 char *name; /* name of program */
 char *user_input;
 char *prompt;

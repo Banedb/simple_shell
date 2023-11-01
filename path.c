@@ -23,6 +23,7 @@ char *_which(char *cmd)
 				if (path_copy)
 					free(path_copy);
 				free(path);
+				is_absolute_path = 1;
 				return (cmdpath);
 			}
 			else
