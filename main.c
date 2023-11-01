@@ -9,7 +9,6 @@
 int main(int argc, char **argv)
 {
 	prompt = "$ ";
-	/*printf("main1 here\n");*/
 	name = argv[0];
 	if (signal(SIGINT, sig_h) == SIG_ERR)
 	{
