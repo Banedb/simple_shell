@@ -92,30 +92,6 @@ char *myitoa(int num)
 	str[digits] = '\0';
 	return (str);
 }
-/**
- * mygetc - custom getc
- * @fd: file descriptor
- *
- * Return: gotten char
- */
-int mygetc(int fd)
-{
-	static char buffer[BUFFER_SIZE];
-	static size_t;
-	static size_t;
-
-	pos = 0;
-	size = 0;
-	if (pos >= size)
-	{
-		size = read(fd, buffer, BUFFER_SIZE);
-		pos = 0;
-
-		if (size <= 0 || pos >= size)
-			return (EOF);
-	}
-	return ((int)buffer[pos++]);
-}
 
 /**
  * _strtok - custom version of the strtok function

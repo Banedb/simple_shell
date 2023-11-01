@@ -30,6 +30,8 @@ char *error_127(char **args);
 
 /* misc2.c */
 ssize_t _getline(char **lineptr, size_t *n, int fd);
+void initialize_buffer(int fd, char *buffer, size_t *pos, size_t *size);
+int mygetc(int fd);
 
 /* parser.c */
 int run_input(void);
@@ -51,7 +53,6 @@ int _strlen(char *s);
 char *_strdup(const char *str);
 char *_strndup(const char *str, size_t n);
 char *myitoa(int num);
-int mygetc(int fd);
 char *_strtok(char *line, const char *delim);
 
 

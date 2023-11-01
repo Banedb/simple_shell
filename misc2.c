@@ -48,3 +48,39 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 	(*lineptr)[pos] = '\0';
 	return (pos);
 }
+/**
+ * initialize_buffer - initialize mygetc
+ * @fd: file descriptor
+ * @buffer: ..
+ * @pos: ..
+ * @size: ..
+ */
+
+void initialize_buffer(int fd, char *buffer, size_t *pos, size_t *size)
+{
+	*pos = 0;
+	*size = read(fd, buffer, BUFFER_SIZE);
+}
+
+/**
+ * mygetc - custom getc
+ * @fd: file descriptor
+ *
+ * Return: gotten char
+ */
+int mygetc(int fd)
+{
+	static char buffer[BUFFER_SIZE];
+	static size_t pos;
+	static size_t size;
+
+	if (pos >= size)
+	{
+		initialize_buffer(fd, buffer, &pos, &size);
+
+		if (size <= 0 || pos >= size)
+			return (EOF);
+	}
+
+	return ((int)buffer[pos++]);
+}
