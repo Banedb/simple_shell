@@ -10,6 +10,7 @@ int run_input(void)
 	int exit_status = -1, count = 0;
 	size_t n = 0; /*initial bufsize resizable by gl to accommodate input*/
 	ssize_t charc/* actual n of chars gl read from the input stream */;
+	char **envp;
 
 	hist = 0;
 	user_input = NULL;
@@ -17,11 +18,20 @@ int run_input(void)
 		write(STDOUT_FILENO, prompt, 2);
 	while ((charc = _getline(&user_input, &n, STDIN_FILENO)) != -1)
 	{
-		is_absolute_path = 0;
+		builtpath = 0;
+		path_unset = 1;/*assume PATH is unset*/
 		if (user_input[charc - 1] == '\n')
 			user_input[charc - 1] = '\0';
 		count++;
 		hist++;
+		for (envp = environ; *envp; ++envp)
+		{
+			if (_strcmp(*envp, "PATH=") == 0)
+			{
+				path_unset = 0;  /* PATH is set */
+				break;
+			}
+		}
 		exit_status = tokenizer(user_input);
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, prompt, 2);

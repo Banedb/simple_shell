@@ -135,3 +135,21 @@ char *_strtok(char *line, const char *delim)
 	}
 	return (str_copy);
 }
+/**
+ * _strchr - custom version of the strchr function
+ * @str: string to search
+ * @character: searched char
+ *
+ * Return: address of string
+*/
+
+char *_strchr(const char *str, int character)
+{
+	while (*str != '\0')
+	{
+		if (*str == character)
+			return ((char *)str); /* Found the character */
+		str++;
+	}
+	return (NULL); /* Character not found */
+}

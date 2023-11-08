@@ -23,7 +23,7 @@ char *_which(char *cmd)
 				if (path_copy)
 					free(path_copy);
 				free(path);
-				is_absolute_path = 1;
+				builtpath = 1;
 				return (cmdpath);
 			}
 			else
@@ -41,6 +41,10 @@ char *_which(char *cmd)
 			return (cmd);
 		return (NULL);
 	}
+	else if ((path_unset == 1) && (stat(cmd, &buf) == 0))
+		if (is_absolute_path(cmd))
+			return (cmd);
+		/*return(wunset(cmd));*/
 	return (NULL);
 }
 /**
@@ -102,4 +106,29 @@ char *_getenv(const char *name)
 		}
 	}
 	return (NULL); /* No matching env*/
+}
+char *wunset(char *cmd)
+{
+	char *custom_paths[] = {"/usr/local/sbin", "/usr/local/bin",
+				"/usr/sbin", "/usr/bin", "/sbin", "/bin"};
+	char *cmdpath;
+	int i;
+	struct stat buf;
+
+	for (i = 0; custom_paths[i] != NULL; i++)
+	{
+		cmdpath = build_path(cmd, custom_paths[i]);
+		if (stat(cmdpath, &buf) == 0)
+		{
+			builtpath = 1;
+			/*printf("cmdpath is %s", cmdpath);*/
+			return (cmdpath);
+		}
+		else
+		{
+			if (cmdpath)
+				free(cmdpath);
+		}
+	}
+	return (NULL);
 }

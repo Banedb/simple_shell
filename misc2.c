@@ -84,3 +84,15 @@ int mygetc(int fd)
 
 	return ((int)buffer[pos++]);
 }
+
+int is_absolute_path(const char *path)
+{
+	char *slash;
+
+	slash = _strchr(path, '/');
+/* If '/' is found and it's at the beginning of the string = absolute path */
+	if (slash != NULL && slash == path)
+		return (1); /* It's an absolute path */
+	else
+		return (0); /* It's not an absolute path */
+}

@@ -32,6 +32,7 @@ char *error_127(char **args);
 ssize_t _getline(char **lineptr, size_t *n, int fd);
 void initialize_buffer(int fd, char *buffer, size_t *pos, size_t *size);
 int mygetc(int fd);
+int is_absolute_path(const char *path);
 
 /* parser.c */
 int run_input(void);
@@ -41,6 +42,7 @@ int tokenizer(char *user_input);
 char *_which(char *cmd);
 char *build_path(char *cmd, char *patht);
 char *_getenv(const char *name);
+char *wunset(char *cmd);
 
 /* string.c */
 void _puts(char *str);
@@ -54,7 +56,7 @@ char *_strdup(const char *str);
 char *_strndup(const char *str, size_t n);
 char *myitoa(int num);
 char *_strtok(char *line, const char *delim);
-
+char *_strchr(const char *str, int character);
 
 /* run.c */
 int cmdexe(char **argv, char **envp);
@@ -70,10 +72,11 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /* global variables */
 int hist; /* history counter */
-int is_absolute_path;
+int builtpath;
 char *name; /* name of program */
 char *user_input;
 char *prompt;
+int path_unset;
 
 /* MACROS */
 #define MAXPATH_LEN 1024

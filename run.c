@@ -55,7 +55,7 @@ int exe_ext_cmd(char **argv, char **envp)
 		}
 		else
 		{/* parent process */
-			if (is_absolute_path)
+			if (builtpath)
 				free(cmdpath);
 			return (parent_proc(pid, argv));
 		}
