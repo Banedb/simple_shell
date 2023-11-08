@@ -85,6 +85,12 @@ int mygetc(int fd)
 	return ((int)buffer[pos++]);
 }
 
+/**
+ * is_absolute_path - checks if provided path is absolute
+ * @path: ..
+ *
+ * Return: 1 or 0
+ */
 int is_absolute_path(const char *path)
 {
 	char *slash;

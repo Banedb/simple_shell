@@ -107,6 +107,11 @@ char *_getenv(const char *name)
 	}
 	return (NULL); /* No matching env*/
 }
+/**
+ * wunset - execute if PATH is unset
+ * @cmd: ..
+ * Return: ..
+ */
 char *wunset(char *cmd)
 {
 	char *custom_paths[] = {"/usr/local/sbin", "/usr/local/bin",
