@@ -17,13 +17,14 @@ extern char **environ;
 /* builtins.c */
 char *_cd(const char *path);
 char **_env(char **envStrings);
-void exitShell(char **argv);
+int exitShell(char **argv);
 void printEnv(char **envp);
 
 /* errors.c */
 int err_gen(char **argv, int err_no);
 void cd_error(char *args);
 void cd_error2(char *args);
+void errexit(char *args);
 
 /*errcode.c */
 char *error_127(char **args);

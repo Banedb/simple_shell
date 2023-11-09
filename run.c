@@ -12,8 +12,8 @@ int cmdexe(char **argv, char **envp)
 	if (argv && argv[0])
 	{
 		bic = exe_bi_cmd(argv);
-		if (!bic)
-			return (0);
+		if ((bic == 0) || (_strcmp(argv[0], "exit") == 0))
+			return (bic);
 		else
 			return (exe_ext_cmd(argv, envp));
 	}
@@ -117,10 +117,14 @@ int parent_proc(pid_t pid, char **argv)
 
 int exe_bi_cmd(char **argv)
 {
+	int check;
 	char *path;
 
 	if (_strcmp(argv[0], "exit") == 0)
-		exitShell(argv);
+	{
+		check = exitShell(argv);
+		return (check);
+	}
 	else if (_strcmp(argv[0], "cd") == 0)
 	{
 		if (!argv[1])

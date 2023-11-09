@@ -100,9 +100,11 @@ char **_env(char **envStrings)
 /**
  * exitShell - exit cmd implementation
  * @argv: array of pointers
+ *
+ * Return: 2 on failure
  */
 
-void exitShell(char **argv)
+int exitShell(char **argv)
 {
 	int exit_status;
 
@@ -116,11 +118,33 @@ void exitShell(char **argv)
 	else
 	{
 		exit_status = _atoi(argv[1]);
-		free_args(argv);
-		if (user_input)
-			free(user_input);
-		exit(exit_status);
+		if ((exit_status == 0) && (_strcmp(argv[1], "0") == 0))
+		{
+			free_args(argv);
+			if (user_input)
+				free(user_input);
+			exit(exit_status);
+		}
+		else if (exit_status > 0)
+		{
+			free_args(argv);
+			if (user_input)
+				free(user_input);
+			exit(exit_status);
+		}
+		else if (exit_status < 1)/*atoi returns 0 on failure*/
+		{/*so if exit_status is < 1 when argv[1] is not 0 = illegal no*/
+			errexit(argv[1]);
+			if (!(isatty(STDIN_FILENO)))
+			{
+				free_args(argv);
+				if (user_input)
+					free(user_input);
+				exit(2);
+			}
+		}
 	}
+	return (2);
 }
 
 /**

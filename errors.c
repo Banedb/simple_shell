@@ -74,3 +74,38 @@ void cd_error2(char *args)
 	write(2, "cd : error retrieving current directory\n", 42);
 	free(args);
 }
+
+/**
+ * errexit - generate error when unable to exit with num specified
+ * @args: array of input command
+ *
+ */
+
+void errexit(char *args)
+{
+	char *errmsg, *ic;
+	int len;
+
+	ic = myitoa(hist);
+	if (!ic)
+		return;
+
+	len = _strlen(name) + _strlen(ic) + _strlen(args) + 29;
+	errmsg = malloc(sizeof(char) * (len + 1));
+	if (!errmsg)
+	{
+		free(ic);
+		return;
+	}
+
+	_strcpy(errmsg, name);
+	_strcat(errmsg, ": ");
+	_strcat(errmsg, ic);
+	_strcat(errmsg, ": exit: Illegal number: ");
+	_strcat(errmsg, (args));
+	_strcat(errmsg, "\n");
+
+	free(ic);
+	write(STDERR_FILENO, errmsg, _strlen(errmsg));
+	free(errmsg);
+}
