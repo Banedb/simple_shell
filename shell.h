@@ -61,8 +61,8 @@ char *_strchr(const char *str, int character);
 
 /* run.c */
 int cmdexe(char **argv, char **envp);
-int exe_bi_cmd(char **argv);
-int exe_ext_cmd(char **argv, char **envp);
+int corexec(char **argv);
+int extexec(char **argv, char **envp);
 int parent_proc(pid_t pid, char **argv);
 
 /*misc.c*/

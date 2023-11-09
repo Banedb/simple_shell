@@ -11,24 +11,24 @@ int cmdexe(char **argv, char **envp)
 
 	if (argv && argv[0])
 	{
-		bic = exe_bi_cmd(argv);
+		bic = corexec(argv);
 		if ((bic == 0) || (_strcmp(argv[0], "exit") == 0))
 			return (bic);
 		else
-			return (exe_ext_cmd(argv, envp));
+			return (extexec(argv, envp));
 	}
 	else
 		return (0);
 }
 
 /**
- * exe_ext_cmd - handles external commands execution
+ * extexec - handles external commands execution
  * @argv: array of arguments passed to function
  * @envp: pointer to the environment variables
  * Return: 0 (Success)
  */
 
-int exe_ext_cmd(char **argv, char **envp)
+int extexec(char **argv, char **envp)
 {
 	char *cmdpath = _which(argv[0]);
 	int exit_status = 0;
@@ -109,13 +109,13 @@ int parent_proc(pid_t pid, char **argv)
 	return (exit_status);
 }
 /**
- * exe_bi_cmd - executes builtin commands
+ * corexec - executes builtin commands
  * @argv: array of arguments passed to function
  *
  * Return: 0 (Success)
  */
 
-int exe_bi_cmd(char **argv)
+int corexec(char **argv)
 {
 	int check;
 	char *path;
