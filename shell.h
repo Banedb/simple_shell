@@ -15,10 +15,10 @@
 extern char **environ;
 
 /* builtins.c */
-char *get_dir(const char *path, char **envp);
 char *_cd(const char *path);
 char **_env(char **envStrings);
 void exitShell(char **argv);
+void printEnv(char **envp);
 
 /* errors.c */
 int err_gen(char **argv, int err_no);

@@ -42,7 +42,7 @@ char *_which(char *cmd)
 		return (NULL);
 	}
 	else if ((path_unset == 1) && (stat(cmd, &buf) == 0))
-		if (is_absolute_path(cmd))
+		if ((is_absolute_path(cmd)))
 			return (cmd);
 		/*return(wunset(cmd));*/
 	return (NULL);

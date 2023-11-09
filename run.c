@@ -133,5 +133,10 @@ int exe_bi_cmd(char **argv)
 		}
 		return (0);
 	}
+	else if (_strcmp(argv[0], "env") == 0)
+	{
+		printEnv(environ);
+		return (0);
+	}
 	return (-1);
 }
