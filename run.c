@@ -42,14 +42,16 @@ int exe_ext_cmd(char **argv, char **envp)
 			exit_status = execve(cmdpath, argv, _env(envp));
 			if (exit_status == -1)
 			{
-				free(cmdpath);
+				if (builtpath)
+					free(cmdpath);
 				perror("execve");
 				return (-1);
 			}
 		}
 		else if (pid == -1)/* fork failed */
 		{
-			free(cmdpath);
+			if (builtpath)
+				free(cmdpath);
 			perror("fork");
 			return (-1);
 		}
@@ -81,17 +83,28 @@ int parent_proc(pid_t pid, char **argv)
 		perror("waitpid");
 		return (-1);
 	}
-	if (WIFEXITED(status))
+	if (WIFEXITED(status)) /*Returns true if child process exited normally*/
 	{
-		exit_status = WEXITSTATUS(status);
+		exit_status = WEXITSTATUS(status);/*Retrieve status*/
 		if (exit_status != 0)
+		{
 			err_gen(argv, exit_status);
+			/* if in noninteractive mode, exit with exitstatus */
+			if (!(isatty(STDIN_FILENO)))
+				exit(exit_status);
+		}
 	}
-	else
-	{/* child process did not exit normally */
-		exit_status = 2;
-		perror("error");
-		errno = 2;
+	else if (WIFSIGNALED(status))/* child process exited due to a signal */
+	{
+		exit_status = (128 + WTERMSIG(status));
+		if (!(isatty(STDIN_FILENO)))
+			exit(exit_status);
+	}
+	else/* child process did not exit normally */
+	{
+		exit_status = 127;
+		if (!(isatty(STDIN_FILENO)))
+			exit(exit_status);
 	}
 	return (exit_status);
 }

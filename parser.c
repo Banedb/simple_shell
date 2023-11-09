@@ -35,6 +35,7 @@ int run_input(void)
 		exit_status = tokenizer(user_input);
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, prompt, 2);
+		fflush(stdout);
 	}
 	if (user_input)
 		free(user_input);
