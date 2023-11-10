@@ -9,48 +9,21 @@ void sig_h(int signum)
 	(void) signum;
 }
 
-/**
- * _atoi - converts a string into an integer
- * @s: the string to convert
- *
- * Return: int res
- */
-int _atoi(char *s)
-{
-	int sign = 1, i = 0;
-	unsigned int res = 0;
-
-	while (!(s[i] <= '9' && s[i] >= '0') && s[i] != '\0')
-	{
-		if (s[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (s[i] <= '9' && (s[i] >= '0' && s[i] != '\0'))
-	{
-		res = (res * 10) + (s[i] - '0');
-		i++;
-	}
-	res *= sign;
-	return (res);
-}
 
 /**
- * free_args - free memory before abrupt exit
- * @args: strings array
+ * addFunction - add address of given ptr to array of size < 100
+ * @ptr: ptr whose address is stored in the array envaddys
  */
-void free_args(char **args)
+
+void addFunction(void *ptr)
 {
-	int i;
+	char message[] = "MAX env variables exceeded\n";
 
-	{
-		for (i = 0; args[i] != NULL; i++)
-			free(args[i]);
-		if (args)
-			free(args);
-	}
+	if (addycount < 100)
+		envaddys[addycount++] = ptr;
+	else
+		write(2, message, _strlen(message));
 }
-
 
 /**
  * _realloc - h

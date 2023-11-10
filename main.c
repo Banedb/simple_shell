@@ -8,15 +8,17 @@
  */
 int main(int argc, char **argv)
 {
-	prompt = "$ ";
 	name = argv[0];
+	addycount = 0;
 	if (signal(SIGINT, sig_h) == SIG_ERR)
 	{
+		env_cleanup();
 		exit(EXIT_FAILURE);
 	}
 
 	/*fflush(stdout);*/
 	run_input();
+	env_cleanup();
 	(void)argc;
 	return (0);
 }

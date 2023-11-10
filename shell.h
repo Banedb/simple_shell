@@ -16,9 +16,18 @@ extern char **environ;
 
 /* builtins.c */
 char *_cd(const char *path);
-char **_env(char **envStrings);
 int exitShell(char **argv);
+
+/* cleanup.c */
+void cleaner(char **args);
+void env_cleanup(void);
+void free_args(char **args);
+
+/* envbin.c */
+char **_env(char **envStrings);
+int mysetenv(char *name, char *value);
 void printEnv(char **envp);
+
 
 /* errors.c */
 int err_gen(char **argv, int err_no);
@@ -59,6 +68,10 @@ char *myitoa(int num);
 char *_strtok(char *line, const char *delim);
 char *_strchr(const char *str, int character);
 
+/* string3.c */
+int _atoi(char *s);
+int _strncmp(const char *s1, const char *s2, size_t n);
+
 /* run.c */
 int cmdexe(char **argv, char **envp);
 int corexec(char **argv);
@@ -67,17 +80,14 @@ int parent_proc(pid_t pid, char **argv);
 
 /*misc.c*/
 void sig_h(int signum);
-int _atoi(char *s);
-void free_args(char **args);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void addFunction(void *ptr);
 
 /* global variables */
-int hist; /* history counter */
-int builtpath;
-char *name; /* name of program */
-char *user_input;
-char *prompt;
-int path_unset;
+int addycount, hist; /* history counter */
+int builtpath, path_unset;
+char *user_input, *name; /* name of program */
+void *envaddys[100];
 
 /* MACROS */
 #define MAXPATH_LEN 1024

@@ -10,7 +10,7 @@ int run_input(void)
 	int exit_status = -1, count = 0;
 	size_t n = 0; /*initial bufsize resizable by gl to accommodate input*/
 	ssize_t charc/* actual n of chars gl read from the input stream */;
-	char **envp;
+	char **envp, *prompt = "$ ";
 
 	hist = 0;
 	user_input = NULL;
@@ -41,6 +41,7 @@ int run_input(void)
 		free(user_input);
 	if (isatty(STDIN_FILENO))
 		write(STDERR_FILENO, "\n", 2);
+	env_cleanup();
 	exit(exit_status);
 }
 

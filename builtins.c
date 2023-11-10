@@ -49,53 +49,6 @@ char *_cd(const char *path)
 	return (pathcopy);
 }
 
-/**
- * _env - enviroment implementation
- * @envStrings: array of pointer to strings storing
- *
- * Return: array of pointers to strings
- */
-
-char **_env(char **envStrings)
-{
-	env_t *envs;
-	int envCount = 0, i = 0, j;
-	char **envp = environ, *env;
-
-	/* get number of environ variables */
-	for (; *envp != NULL; envp++)
-		envCount++;
-	envs = malloc(sizeof(struct env) * envCount);
-	/* Populate the environment variables array */
-	envp = environ;
-	for ( ; i < envCount; i++)
-	{
-		env = *envp;
-		j = 0;
-
-		while (env[j] != '=')
-			j++;
-		envs[i].key = _strndup(env, j);
-		envs[i].val = env + j + 1;
-		envp++;
-	}
-	/* Store the environ variables in an array of pointers to strings */
-	i = 0;
-	while (*envp != NULL)
-	{
-		/*allocate mem for '=' and null terminator, hence + 2*/
-		_puts(*envp);
-		envp++;
-	}
-	/* set last element of array: NULL*/
-	envStrings[envCount] = NULL;
-	/* avoid mem leaks, free allocated mem*/
-	for (i = 0; i < envCount; i++)
-		free(envs[i].key);
-	free(envs);
-
-	return (envStrings);
-}
 
 /**
  * exitShell - exit cmd implementation
@@ -110,9 +63,7 @@ int exitShell(char **argv)
 
 	if (argv[1] == NULL)
 	{
-		free_args(argv);
-		if (user_input)
-			free(user_input);
+		cleaner(argv);
 		exit(0);
 	}
 	else
@@ -120,16 +71,12 @@ int exitShell(char **argv)
 		exit_status = _atoi(argv[1]);
 		if ((exit_status == 0) && (_strcmp(argv[1], "0") == 0))
 		{
-			free_args(argv);
-			if (user_input)
-				free(user_input);
+			cleaner(argv);
 			exit(exit_status);
 		}
 		else if (exit_status > 0)
 		{
-			free_args(argv);
-			if (user_input)
-				free(user_input);
+			cleaner(argv);
 			exit(exit_status);
 		}
 		else if (exit_status < 1)/*atoi returns 0 on failure*/
@@ -137,29 +84,10 @@ int exitShell(char **argv)
 			errexit(argv[1]);
 			if (!(isatty(STDIN_FILENO)))
 			{
-				free_args(argv);
-				if (user_input)
-					free(user_input);
+				cleaner(argv);
 				exit(2);
 			}
 		}
 	}
 	return (2);
-}
-
-/**
- * printEnv - print environment variables
- * @envp: pointer to environment variables
- */
-
-void printEnv(char **envp)
-{
-	int i = 0;
-
-	while (envp[i] != NULL)
-	{
-		write(STDOUT_FILENO, envp[i], strlen(envp[i]));
-		write(STDOUT_FILENO, "\n", 1);
-		i++;
-	}
 }

@@ -12,7 +12,7 @@ int cmdexe(char **argv, char **envp)
 	if (argv && argv[0])
 	{
 		bic = corexec(argv);
-		if ((bic == 0) || (_strcmp(argv[0], "exit") == 0))
+		if (bic != 1)
 			return (bic);
 		else
 			return (extexec(argv, envp));
@@ -127,7 +127,7 @@ int corexec(char **argv)
 	}
 	else if (_strcmp(argv[0], "cd") == 0)
 	{
-		if (!argv[1])
+		if (argv[1] == NULL)
 			path = _cd(argv[1]), chdir(path);
 		else
 		{
@@ -142,5 +142,14 @@ int corexec(char **argv)
 		printEnv(environ);
 		return (0);
 	}
-	return (-1);
+	else if (_strcmp(argv[0], "setenv") == 0)
+	{
+		if ((argv[1] == NULL) || (argv[2] == NULL) || (argv[3] != NULL))
+		{
+			write(2, "usage: setenv VARIABLE VALUE\n", 29);
+			return (2);
+		}
+		return (mysetenv(argv[1], argv[2]));
+	}
+	return (1);
 }
