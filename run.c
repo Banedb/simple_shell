@@ -32,7 +32,7 @@ int cmdexe(char **args)
 int extexec(char **argv, char **envp)
 {
 	char *cmdpath = _which(argv[0]);
-	int exit_status = 0;
+	int status = 0;
 	pid_t pid;
 
 	if (cmdpath != NULL) /* fork only when command exists */
@@ -40,8 +40,8 @@ int extexec(char **argv, char **envp)
 		pid = fork();
 		if (pid == 0)
 		{/*child process */
-			exit_status = execve(cmdpath, argv, _env(envp));
-			if (exit_status == -1)
+			status = execve(cmdpath, argv, _env(envp));
+			if (status == -1)
 			{
 				if (builtpath)
 					free(cmdpath);
@@ -64,8 +64,8 @@ int extexec(char **argv, char **envp)
 		}
 	}
 	else/* cannot locate exe */
-		exit_status = error_handler(argv, 127);
-	return (exit_status);
+		status = error_handler(argv, 127);
+	return (status);
 }
 
 /**
@@ -77,7 +77,7 @@ int extexec(char **argv, char **envp)
 
 int parent_proc(pid_t pid, char **argv)
 {
-	int status, exit_status;
+	int status;
 
 	if (waitpid(pid, &status, 0) == -1)
 	{
@@ -88,25 +88,12 @@ int parent_proc(pid_t pid, char **argv)
 	{
 		exit_status = WEXITSTATUS(status);/*Retrieve status*/
 		if (exit_status != 0)
-		{
 			error_handler(argv, exit_status);
-			/* if in noninteractive mode, exit with exitstatus */
-			if (!(isatty(STDIN_FILENO)))
-				exit(exit_status);
-		}
 	}
 	else if (WIFSIGNALED(status))/* child process exited due to a signal */
-	{
 		exit_status = (128 + WTERMSIG(status));
-		if (!(isatty(STDIN_FILENO)))
-			exit(exit_status);
-	}
 	else/* child process did not exit normally */
-	{
 		exit_status = 127;
-		if (!(isatty(STDIN_FILENO)))
-			exit(exit_status);
-	}
 	return (exit_status);
 }
 /**

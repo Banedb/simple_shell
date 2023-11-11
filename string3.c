@@ -27,25 +27,58 @@ int _atoi(char *s)
 }
 
 /**
- * _strncmp - compares s1 upto n size with s2
- * @s1: ..
- * @s2: ..
- * @n: ..
+ * myitoa - converts integer to str
+ * @num: num to convrt to string
  *
- * Return: 0
+ * Return: pointer to converted string
  */
-
-int _strncmp(const char *s1, const char *s2, size_t n)
+char *myitoa(int num)
 {
-	while (n > 0)
+	int temp = num, index, digits = 0;
+	char *str;
+
+	while (temp != 0)
 	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		if (*s1 == '\0')
-			return (0); /* Both strings are equal up to n chars */
-		s1++;
-		s2++;
-		n--;
+		temp /= 10;
+		digits++;
 	}
-	return (0); /* Both strings are equal up to n chars */
+	if (num == 0)
+		digits = 1;
+	str = malloc((digits + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	if (num < 0)
+	{
+		str[0] = '-';
+		num = -num;
+	}
+	index = digits - 1;
+	while (num > 0)
+	{
+		str[index] = '0' + (num % 10);
+		num /= 10;
+		index--;
+	}
+	str[digits] = '\0';
+	return (str);
+}
+
+
+/**
+*_puts - entry point
+*@str: character passed as an argument
+*Description: 'Write a function that prints a string,
+*followed by a new line, to stdout.
+*Prototype: void _puts(char *str)
+*/
+void _puts(char *str)
+{
+	char newLine = '\n';
+
+	while (*str != '\0')
+	{
+		write(1, str, 1);
+		str++;
+	}
+	(void)newLine;
 }

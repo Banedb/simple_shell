@@ -1,25 +1,6 @@
 #include "shell.h"
 
 /**
-*_puts - entry point
-*@str: character passed as an argument
-*Description: 'Write a function that prints a string,
-*followed by a new line, to stdout.
-*Prototype: void _puts(char *str)
-*/
-void _puts(char *str)
-{
-	char newLine = '\n';
-
-	while (*str != '\0')
-	{
-		write(1, str, 1);
-		str++;
-	}
-	(void)newLine;
-}
-
-/**
  * _strcat - function that concatenates two strings
  * @dest: first argument
  * @src: second argument to be added to first
@@ -84,6 +65,29 @@ int _strcmp(char *s1, char *s2)
 	return (res);
 }
 
+/**
+ * _strncmp - compares s1 upto n size with s2
+ * @s1: ..
+ * @s2: ..
+ * @n: ..
+ *
+ * Return: 0
+ */
+
+int _strncmp(const char *s1, const char *s2, size_t n)
+{
+	while (n > 0)
+	{
+		if (*s1 != *s2)
+			return (*s1 - *s2);
+		if (*s1 == '\0')
+			return (0); /* Both strings are equal up to n chars */
+		s1++;
+		s2++;
+		n--;
+	}
+	return (0); /* Both strings are equal up to n chars */
+}
 
 /**
  * _strlen - calculate the length of a string.

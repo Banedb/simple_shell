@@ -57,22 +57,23 @@ char *_getenv(const char *name);
 char *wunset(char *cmd);
 
 /* string.c */
-void _puts(char *str);
 char *_strcat(char *dest, char *src);
 char *_strcpy(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
+int _strncmp(const char *s1, const char *s2, size_t n);
 int _strlen(char *s);
 
 /* string2.c */
 char *_strdup(const char *str);
 char *_strndup(const char *str, size_t n);
-char *myitoa(int num);
 char *_strtok(char *line, const char *delim);
+char *_strtok_r(char *str, const char *delim, char **saveptr);
 char *_strchr(const char *str, int character);
 
 /* string3.c */
 int _atoi(char *s);
-int _strncmp(const char *s1, const char *s2, size_t n);
+char *myitoa(int num);
+void _puts(char *str);
 
 /* run.c */
 int cmdexe(char **argv);
@@ -86,7 +87,7 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void addyarray(void *ptr);
 
 /* global variables */
-int addycount, hist; /* history counter */
+int addycount, exit_status, hist; /* history counter */
 int builtpath, path_unset;
 char *user_input, *name; /* name of program */
 void *envaddys[100];

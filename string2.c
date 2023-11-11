@@ -57,43 +57,6 @@ char *_strndup(const char *str, size_t n)
 }
 
 /**
- * myitoa - converts integer to str
- * @num: num to convrt to string
- *
- * Return: pointer to converted string
- */
-char *myitoa(int num)
-{
-	int temp = num, index, digits = 0;
-	char *str;
-
-	while (temp != 0)
-	{
-		temp /= 10;
-		digits++;
-	}
-	if (num == 0)
-		digits = 1;
-	str = malloc((digits + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	if (num < 0)
-	{
-		str[0] = '-';
-		num = -num;
-	}
-	index = digits - 1;
-	while (num > 0)
-	{
-		str[index] = '0' + (num % 10);
-		num /= 10;
-		index--;
-	}
-	str[digits] = '\0';
-	return (str);
-}
-
-/**
  * _strtok - custom version of the strtok function
  * @line: line to be split into strings
  * @delim: the delimiter
@@ -135,6 +98,46 @@ char *_strtok(char *line, const char *delim)
 	}
 	return (str_copy);
 }
+
+/**
+ * _strtok_r - custom version of the strtok_r function
+ * @str: line to be split into strings
+ * @delim: the delimiter
+ * @saveptr: adress of str
+ * Return: split string
+*/
+
+char *_strtok_r(char *str, const char *delim, char **saveptr)
+{
+	char *token;
+
+	/* If str is not NULL, update the saveptr */
+	if (str != NULL)
+		*saveptr = str;
+
+	/* Skip leading delimiters */
+	while (**saveptr != '\0' && _strchr(delim, **saveptr) != NULL)
+		(*saveptr)++;
+
+	/* If we've reached the end of the string, return NULL */
+	if (**saveptr == '\0')
+		return (NULL);
+
+	/* Find the end of the token */
+	token = *saveptr;
+	while (**saveptr != '\0' && _strchr(delim, **saveptr) == NULL)
+		(*saveptr)++;
+
+	/* If this is not the end of the string, null-terminate the token */
+	if (**saveptr != '\0')
+	{
+		**saveptr = '\0';
+		(*saveptr)++;
+	}
+
+	return (token);
+}
+
 /**
  * _strchr - custom version of the strchr function
  * @str: string to search

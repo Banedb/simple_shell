@@ -10,6 +10,7 @@ int main(int argc, char **argv)
 {
 	name = argv[0];
 	addycount = 0;
+	exit_status = 0;
 	if (signal(SIGINT, sig_h) == SIG_ERR)
 	{
 		env_cleanup();

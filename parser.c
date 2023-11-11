@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
- * run_input - gets input from stdin using getline
+ * run_input - gets input from stdin using custom getline function
  *
  * Return: pointer to the input
  */
 int run_input(void)
 {
-	int exit_status = -1, count = 0;
+	int count = 0, status = 1;
 	size_t n = 0; /*initial bufsize resizable by gl to accommodate input*/
 	ssize_t charc/* actual n of chars gl read from the input stream */;
 	char **envp, *prompt = "$ ";
@@ -32,17 +32,19 @@ int run_input(void)
 				break;
 			}
 		}
-		exit_status = tokenizer(user_input);
+		status = tokenizer(user_input);
 		if (isatty(STDIN_FILENO))
+		{
 			write(STDOUT_FILENO, prompt, 2);
-		fflush(stdout);
+			fflush(stdout);
+		}
 	}
 	if (user_input)
 		free(user_input);
 	if (isatty(STDIN_FILENO))
 		write(STDERR_FILENO, "\n", 2);
 	env_cleanup();
-	exit(exit_status);
+	exit(status);
 }
 
 /**
@@ -53,38 +55,43 @@ int run_input(void)
  */
 int tokenizer(char *line)
 {
-	int tcount, exit_status = 0;
-	const char *delim = " \n\t";
-	char *line_copy = NULL, *token, **token_array;
+	int tcount, status = 0;
+	const char *delim = " \n\t", *separator = ";";
+	char *cmd_copy = NULL, *token, **token_array, *command, *cp, *tp, *tpr;
 
 	line = comment(line);
 	if (!line)
-		return (exit_status);
-	line_copy = _strdup(line);
-	if (line_copy != NULL)
-	{ /* count tokens ie n of strings */
-		token = _strtok(line_copy, delim);
-		for (tcount = 0; token != NULL; tcount++)
-			token = _strtok(NULL, delim);
-		free(line_copy);
-	}
-	else
-		return (-1);
+		return (0);
+	command = _strtok_r(line, separator, &cp);
+	for (; command != NULL;)
+	{
+		cmd_copy = _strdup(command);
+		if (cmd_copy != NULL)
+		{/* count tokens ie n of strings */
+			token = _strtok_r(cmd_copy, delim, &tp);
+			for (tcount = 0; token != NULL; tcount++)
+				token = _strtok_r(NULL, delim, &tp);
+			free(cmd_copy);
+		}
+		else
+			return (-1);
 
-	/* allocate space to hold the array of strings */
-	token_array = malloc(sizeof(char *) * (tcount + 1));
-	if (!token_array)
-		return (error_handler(NULL, 50));
-	token = _strtok(line, delim);
-	for (tcount = 0; token != NULL; tcount++)
-	{ /* store each token in the token_array */
-		token_array[tcount] = _strdup(token);
-		token = _strtok(NULL, delim);
+		/* allocate space to hold the array of strings */
+		token_array = malloc(sizeof(char *) * (tcount + 1));
+		if (!token_array)
+			return (error_handler(NULL, 50));
+		token = _strtok_r(command, delim, &tpr);
+		for (tcount = 0; token != NULL; tcount++)
+		{ /* store each token in the token_array */
+			token_array[tcount] = _strdup(token);
+			token = _strtok_r(NULL, delim, &tpr);
+		}
+		token_array[tcount] = NULL;
+		status = cmdexe(token_array);
+		free_args(token_array);
+		command = _strtok_r(NULL, separator, &cp);
 	}
-	token_array[tcount] = NULL;
-	exit_status = cmdexe(token_array);
-	free_args(token_array);
-	return (exit_status);
+	return (status);
 }
 
 

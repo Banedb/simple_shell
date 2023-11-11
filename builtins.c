@@ -59,34 +59,30 @@ char *_cd(const char *path)
 
 int exitShell(char **argv)
 {
-	int exit_status;
+	int status;
 
 	if (argv[1] == NULL)
 	{
 		cleaner(argv);
-		exit(0);
+		exit(exit_status);
 	}
 	else
 	{
-		exit_status = _atoi(argv[1]);
-		if ((exit_status == 0) && (_strcmp(argv[1], "0") == 0))
+		status = _atoi(argv[1]);
+		if ((status == 0) && (_strcmp(argv[1], "0") == 0))
 		{
 			cleaner(argv);
-			exit(exit_status);
+			exit(status);
 		}
-		else if (exit_status > 0)
+		else if (status > 0)
 		{
 			cleaner(argv);
-			exit(exit_status);
+			exit(status);
 		}
-		else if (exit_status < 1)/*atoi returns 0 on failure*/
-		{/*so if exit_status is < 1 when argv[1] is not 0 = illegal no*/
+		else if (status < 1)
+		{ /*atoi returns 0 on failure so if status 0 or < 1*/
+			/* and argv[1] is not 0, num is an invalid arg */
 			errexit(argv[1]);
-			if (!(isatty(STDIN_FILENO)))
-			{
-				cleaner(argv);
-				exit(2);
-			}
 		}
 	}
 	return (2);
