@@ -117,14 +117,10 @@ int parent_proc(pid_t pid, char **argv)
 
 int corexec(char **argv)
 {
-	int check;
 	char *path;
 
 	if (_strcmp(argv[0], "exit") == 0)
-	{
-		check = exitShell(argv);
-		return (check);
-	}
+		return (exitShell(argv));
 	else if (_strcmp(argv[0], "cd") == 0)
 	{
 		if (argv[1] == NULL)
@@ -147,9 +143,18 @@ int corexec(char **argv)
 		if ((argv[1] == NULL) || (argv[2] == NULL) || (argv[3] != NULL))
 		{
 			write(2, "usage: setenv VARIABLE VALUE\n", 29);
-			return (2);
+			return (-1);
 		}
 		return (mysetenv(argv[1], argv[2]));
+	}
+	else if (_strcmp(argv[0], "unsetenv") == 0)
+	{
+		if ((argv[1] == NULL) || (argv[2] != NULL))
+		{
+			write(2, "usage: unsetenv VARIABLE\n", 25);
+			return (-1);
+		}
+		return (myunsetenv(argv[1]));
 	}
 	return (1);
 }

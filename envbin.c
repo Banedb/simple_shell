@@ -8,7 +8,7 @@
 
 char **_env(char **envStrings)
 {
-	env_t *envs;
+	env_t *envs = NULL;
 	int envCount = 0, i = 0, j;
 	char **envp = environ, *env;
 
@@ -16,6 +16,11 @@ char **_env(char **envStrings)
 	for (; *envp != NULL; envp++)
 		envCount++;
 	envs = malloc(sizeof(struct env) * envCount);
+	if (envs == NULL)
+	{
+		(err_gen(NULL, 50));
+		return (NULL);
+	}
 	/* Populate the environment variables array */
 	envp = environ;
 	for ( ; i < envCount; i++)
@@ -29,17 +34,14 @@ char **_env(char **envStrings)
 		envs[i].val = env + j + 1;
 		envp++;
 	}
-	/* Store the environ variables in an array of pointers to strings */
 	i = 0;
 	while (*envp != NULL)
 	{
-		/*allocate mem for '=' and null terminator, hence + 2*/
 		_puts(*envp);
 		envp++;
 	}
 	/* set last element of array: NULL*/
 	envStrings[envCount] = NULL;
-	/* avoid mem leaks, free allocated mem*/
 	for (i = 0; i < envCount; i++)
 		free(envs[i].key);
 	free(envs);
@@ -59,19 +61,17 @@ int mysetenv(char *name, char *value)
 	char **env, *env_var = NULL, **new_environ = NULL;
 	int i, size = 0;
 
+	if ((_strchr(name, '=') != NULL) || (_strlen(name) == 0))
+		return (err_gen(NULL, 22));
 	env_var = malloc(_strlen(name) + _strlen(value) + 2);
-	addFunction(env_var);
 	if (env_var == NULL)
-	{
-		perror("malloc");
-		return (-1);
-	}
+		return (err_gen(NULL, 50));
+	addFunction(env_var);
 	_strcpy(env_var, name);
 	_strcat(env_var, "=");
 	_strcat(env_var, value);
-	/* Iterate through the environ and update if it exists */
 	for (env = environ; *env; env++)
-	{
+	{/* Iterate through the environ and update if it exists */
 		if (_strncmp(*env, name, strlen(name)) == 0 &&
 		    (*env)[_strlen(name)] == '=')
 		{/* Found an existing environment variable, replace it */
@@ -82,12 +82,10 @@ int mysetenv(char *name, char *value)
 	for (env = environ; *env; env++)
 		size++;
 	new_environ = malloc((size + 2) * sizeof(char *));
-	addFunction(new_environ);
 	if (new_environ == NULL)
-	{
-		perror("malloc");
-		return (-1);
-	} /* Copy existing environment variables */
+		return (err_gen(NULL, 50));
+	addFunction(new_environ);
+	/* Copy existing environment variables */
 	for (i = 0; environ[i]; i++)
 		new_environ[i] = environ[i];
 	new_environ[i] = env_var;/* Add the new envs and terminate the list */
@@ -96,7 +94,35 @@ int mysetenv(char *name, char *value)
 	return (0);
 }
 
+/**
+ * myunsetenv - custom unsetenv
+ * @name: environment variable name
+ *
+ * Return: 0 on success
+ */
 
+int myunsetenv(char *name)
+{
+	char **env, **shift;
+
+	if ((_strchr(name, '=') != NULL) || (_strlen(name) == 0))
+		return (err_gen(NULL, 22));
+	/* Iterate through the environ and remove if it exists */
+	for (env = environ; *env; env++)
+	{
+		if (_strncmp(*env, name, _strlen(name)) == 0 &&
+		    (*env)[_strlen(name)] == '=')
+		{
+			/* Found the environment variable, remove it */
+			for (shift = env; *shift; ++shift)
+				*shift = *(shift + 1);
+			return (0);
+		}
+	}
+
+	/* If the variable doesn't exist, no need to do anything */
+	return (0);
+}
 /**
  * printEnv - print environment variables
  * @envp: pointer to environment variables

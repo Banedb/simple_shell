@@ -1,1 +1,1 @@
-# wip
+A simple shell

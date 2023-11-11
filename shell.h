@@ -26,6 +26,7 @@ void free_args(char **args);
 /* envbin.c */
 char **_env(char **envStrings);
 int mysetenv(char *name, char *value);
+int myunsetenv(char *name);
 void printEnv(char **envp);
 
 

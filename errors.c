@@ -12,7 +12,17 @@ int err_gen(char **argv, int err_no)
 	char *errmsg = NULL;
 
 	switch (err_no)
-	{	case 127:
+	{
+	case 22:
+		write(STDERR_FILENO, "Invalid Argument\n", 17);
+		errno = EINVAL;
+		exit_status = -1;
+		break;
+	case 50:
+		write(STDERR_FILENO, "Error: Unable to allocate memory\n", 33);
+		exit_status = -1;
+		break;
+	case 127:
 		errmsg = error_127(argv);
 		exit_status = 127;
 		break;
