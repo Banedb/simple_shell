@@ -1,12 +1,12 @@
 #include "shell.h"
 /**
- * err_gen - sends custom error message to stderr
+ * error_handler - sends custom error message to stderr
  * @argv: ..
  * @err_no: error code
  *
  * Return: error code
  */
-int err_gen(char **argv, int err_no)
+int error_handler(char **argv, int err_no)
 {
 	int exit_status = 0;
 	char *errmsg = NULL;
@@ -23,7 +23,8 @@ int err_gen(char **argv, int err_no)
 		exit_status = -1;
 		break;
 	case 127:
-		errmsg = error_127(argv);
+		errmsg
+			= error_127(argv);
 		exit_status = 127;
 		break;
 	}

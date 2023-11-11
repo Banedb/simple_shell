@@ -11,11 +11,11 @@ void sig_h(int signum)
 
 
 /**
- * addFunction - add address of given ptr to array of size < 100
+ * addyarray - add address of given ptr to array of size < 100
  * @ptr: ptr whose address is stored in the array envaddys
  */
 
-void addFunction(void *ptr)
+void addyarray(void *ptr)
 {
 	char message[] = "MAX env variables exceeded\n";
 

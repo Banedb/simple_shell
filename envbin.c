@@ -18,7 +18,7 @@ char **_env(char **envStrings)
 	envs = malloc(sizeof(struct env) * envCount);
 	if (envs == NULL)
 	{
-		(err_gen(NULL, 50));
+		(error_handler(NULL, 50));
 		return (NULL);
 	}
 	/* Populate the environment variables array */
@@ -62,11 +62,11 @@ int mysetenv(char *name, char *value)
 	int i, size = 0;
 
 	if ((_strchr(name, '=') != NULL) || (_strlen(name) == 0))
-		return (err_gen(NULL, 22));
+		return (error_handler(NULL, 22));
 	env_var = malloc(_strlen(name) + _strlen(value) + 2);
 	if (env_var == NULL)
-		return (err_gen(NULL, 50));
-	addFunction(env_var);
+		return (error_handler(NULL, 50));
+	addyarray(env_var);
 	_strcpy(env_var, name);
 	_strcat(env_var, "=");
 	_strcat(env_var, value);
@@ -83,8 +83,8 @@ int mysetenv(char *name, char *value)
 		size++;
 	new_environ = malloc((size + 2) * sizeof(char *));
 	if (new_environ == NULL)
-		return (err_gen(NULL, 50));
-	addFunction(new_environ);
+		return (error_handler(NULL, 50));
+	addyarray(new_environ);
 	/* Copy existing environment variables */
 	for (i = 0; environ[i]; i++)
 		new_environ[i] = environ[i];
@@ -106,7 +106,7 @@ int myunsetenv(char *name)
 	char **env, **shift;
 
 	if ((_strchr(name, '=') != NULL) || (_strlen(name) == 0))
-		return (err_gen(NULL, 22));
+		return (error_handler(NULL, 22));
 	/* Iterate through the environ and remove if it exists */
 	for (env = environ; *env; env++)
 	{

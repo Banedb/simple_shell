@@ -31,7 +31,7 @@ void printEnv(char **envp);
 
 
 /* errors.c */
-int err_gen(char **argv, int err_no);
+int error_handler(char **argv, int err_no);
 void cd_error(char *args);
 void cd_error2(char *args);
 void errexit(char *args);
@@ -48,6 +48,7 @@ int is_absolute_path(const char *path);
 /* parser.c */
 int run_input(void);
 int tokenizer(char *user_input);
+char *comment(char *line);
 
 /* path.c */
 char *_which(char *cmd);
@@ -74,7 +75,7 @@ int _atoi(char *s);
 int _strncmp(const char *s1, const char *s2, size_t n);
 
 /* run.c */
-int cmdexe(char **argv, char **envp);
+int cmdexe(char **argv);
 int corexec(char **argv);
 int extexec(char **argv, char **envp);
 int parent_proc(pid_t pid, char **argv);
@@ -82,7 +83,7 @@ int parent_proc(pid_t pid, char **argv);
 /*misc.c*/
 void sig_h(int signum);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void addFunction(void *ptr);
+void addyarray(void *ptr);
 
 /* global variables */
 int addycount, hist; /* history counter */

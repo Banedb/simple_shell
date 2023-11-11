@@ -1,21 +1,22 @@
 #include "shell.h"
 /**
  * cmdexe - coordinates command execution
- * @argv: array of arguments passed to function
- * @envp: pointer to the environment variables
+ * @args: array of arguments passed to function
+ *
  * Return: 0 (Success)
  */
-int cmdexe(char **argv, char **envp)
+int cmdexe(char **args)
 {
+	char **envp = environ;
 	int bic;
 
-	if (argv && argv[0])
+	if (args && args[0])
 	{
-		bic = corexec(argv);
+		bic = corexec(args);
 		if (bic != 1)
 			return (bic);
 		else
-			return (extexec(argv, envp));
+			return (extexec(args, envp));
 	}
 	else
 		return (0);
@@ -63,7 +64,7 @@ int extexec(char **argv, char **envp)
 		}
 	}
 	else/* cannot locate exe */
-		exit_status = err_gen(argv, 127);
+		exit_status = error_handler(argv, 127);
 	return (exit_status);
 }
 
@@ -88,7 +89,7 @@ int parent_proc(pid_t pid, char **argv)
 		exit_status = WEXITSTATUS(status);/*Retrieve status*/
 		if (exit_status != 0)
 		{
-			err_gen(argv, exit_status);
+			error_handler(argv, exit_status);
 			/* if in noninteractive mode, exit with exitstatus */
 			if (!(isatty(STDIN_FILENO)))
 				exit(exit_status);

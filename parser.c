@@ -55,13 +55,15 @@ int tokenizer(char *line)
 {
 	int tcount, exit_status = 0;
 	const char *delim = " \n\t";
-	char *line_copy = NULL, *token, **token_array, **envp = environ;
+	char *line_copy = NULL, *token, **token_array;
 
+	line = comment(line);
+	if (!line)
+		return (exit_status);
 	line_copy = _strdup(line);
 	if (line_copy != NULL)
-	{
+	{ /* count tokens ie n of strings */
 		token = _strtok(line_copy, delim);
-		/* count tokens ie n of strings */
 		for (tcount = 0; token != NULL; tcount++)
 			token = _strtok(NULL, delim);
 		free(line_copy);
@@ -72,16 +74,45 @@ int tokenizer(char *line)
 	/* allocate space to hold the array of strings */
 	token_array = malloc(sizeof(char *) * (tcount + 1));
 	if (!token_array)
-		return (-1);
-	/* store each token in the token_array */
+		return (error_handler(NULL, 50));
 	token = _strtok(line, delim);
 	for (tcount = 0; token != NULL; tcount++)
-	{
+	{ /* store each token in the token_array */
 		token_array[tcount] = _strdup(token);
 		token = _strtok(NULL, delim);
 	}
 	token_array[tcount] = NULL;
-	exit_status = cmdexe(token_array, envp);
+	exit_status = cmdexe(token_array);
 	free_args(token_array);
 	return (exit_status);
+}
+
+
+/**
+ * comment - checks for comment in the line string
+ * @line: ...
+ *
+ * Return: string without comment either modified or unmodified
+ */
+
+char *comment(char *line)
+{
+	size_t i;
+	char *pos, *clean = NULL;
+
+	if (*line == '#')
+		return (NULL);
+	pos = _strchr(line, '#');
+	if (pos)
+	{
+		i = pos - line;
+		if (i > 0 && line[i - 1] == ' ')
+		{
+			clean = _strndup(line, i);
+			clean[i] = '\0';
+			addyarray(clean);
+			line = clean;
+		}
+	}
+	return (line);
 }
