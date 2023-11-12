@@ -94,7 +94,10 @@ int tokenizer(char *command)
  */
 int parser(char *line)
 {
-	char *cmdptr, *and_tok, *or_token, *commands;
+	int ret = 0;
+	char *cmd, *op = "h", *and_token = _strstr(line, "&&");
+	char *or_token = _strstr(line, "||"), *ota, *ata;
+	char *commands, *cmdptr;
 	int status = 0;
 
 	line = comment(line);
@@ -103,14 +106,12 @@ int parser(char *line)
 	commands = _strtok_r(line, ";", &cmdptr);
 	for (; commands != NULL;)
 	{
-		and_tok = _strstr(commands, "&&");
-		or_token = _strstr(commands, "||");
-		if (and_tok && (or_token == NULL || and_tok < or_token))
+		if (and_token && (or_token == NULL || and_token < or_token))
 			status = checkAND(commands);
-		else if (or_token && (and_tok == NULL || or_token < and_tok))
+		else if (or_token && (and_token == NULL || or_token < and_token))
 			status = checkOR(commands);
 		else
-			status = tokenizer(commands);
+			status = tokenizer(commands); */
 		commands = _strtok_r(NULL, ";", &cmdptr);
 	}
 	return (status);
@@ -118,89 +119,112 @@ int parser(char *line)
 
 
 /**
- * checkAND - handles when first operator is &&
+ * andor - handles the || and && logical operators
  * @commands: line to be split
  * Return: 0 on success
  */
-int checkAND(char *commands)
+int andor(char *commands)
 {
 	int ret = 0;
 	char *cmd, *op = "h", *and_token = _strstr(commands, "&&");
-	char *or_token = _strstr(commands, "||"), *ata;
+	char *or_token = _strstr(commands, "||"), *ota, *ata;
 
-	if (or_token == NULL)
-	{
-		cmd = _strtok_r(commands, "&", &ata);
-		while (cmd != NULL)
+	if (and_token && (or_token == NULL || and_token < or_token))
+	{ /* Tokenize based on "&&" */
+		if (or_token == NULL)
 		{
-			ret = tokenizer(cmd);
-			if (ret != 0)
-				return (ret);
-			cmd = _strtok_r(NULL, "&", &ata);
+			cmd = _strtok_r(commands, "&", &ata);
+			while (cmd != NULL)
+			{
+				ret = tokenizer(cmd);
+				if (ret != 0)
+					return (ret);
+				cmd = _strtok_r(NULL, "&", &ata);
+			}
+		}
+		else
+		{
+			cmd = _strtok_r(commands, "&", &ata);
+			while (cmd != NULL)
+			{
+				ret = tokenizer(cmd);
+				if (((ret == 0) && (_strcmp(op, "||") == 0))
+				    || ((ret != 0) && (_strcmp(op, "&&") == 0)))
+					return (ret);
+				or_token = _strstr(commands, "||");
+				and_token = _strstr(commands, "&&");
+				if (and_token == NULL || and_token > or_token)
+					op = "|";
+				else
+					op = "&";
+				cmd = _strtok_r(NULL, op, &ata);
+			}
 		}
 	}
-	else
-	{
-		cmd = _strtok_r(commands, "&", &ata);
-		while (cmd != NULL)
+	else if (or_token && (and_token == NULL || or_token < and_token))
+	{ /* Tokenize based on "||" */
+		if (and_token == NULL)
 		{
-			ret = tokenizer(cmd);
-			if (((ret == 0) && (_strcmp(op, "||") == 0))
-			    || ((ret != 0) && (_strcmp(op, "&&") == 0)))
-				return (ret);
-			or_token = _strstr(commands, "||");
-			and_token = _strstr(commands, "&&");
-			if (and_token == NULL || and_token > or_token)
-				op = "|";
-			else
-				op = "&";
-			cmd = _strtok_r(NULL, op, &ata);
+			cmd = _strtok_r(commands, "|", &ota);
+			while (cmd != NULL)
+			{
+				/* printf("command3 is %s\n", cmd); */
+				ret = tokenizer(cmd);
+				if (ret == 0)
+					return (ret);
+				cmd = _strtok_r(NULL, "|", &ota);
+			}
+		}
+		else
+		{
+			cmd = _strtok_r(commands, "|", &ota);
+			while (cmd != NULL)
+			{
+				/* printf("command4 is %s\n", cmd); */
+				ret = tokenizer(cmd);
+				if (((ret == 0) && (_strcmp(op, "||") == 0))
+				    || ((ret != 0) && (_strcmp(op, "&&") == 0)))
+					return (ret);
+				or_token = _strstr(commands, "||");
+				and_token = _strstr(commands, "&&");
+				if (or_token == NULL || and_token < or_token)
+					op = "&";
+				else
+					op = "|";
+				cmd = _strtok_r(NULL, op, &ota);
+			}
 		}
 	}
+	else /* No "&&" or "||", just execute the command */
+		ret = tokenizer(commands);
 	return (ret);
 }
 
 /**
- * checkOR - handles when first operator is ||
- * @commands: line to be split
- * Return: 0 on success
+ * comment - checks for comment in the line string
+ * @line: ...
+ *
+ * Return: string without comment either modified or unmodified
  */
-int checkOR(char *commands)
-{
-	int ret = 0;
-	char *cmd, *op = "h", *and_token = _strstr(commands, "&&");
-	char *or_token = _strstr(commands, "||"), *ota;
 
-	if (and_token == NULL)
+char *comment(char *line)
+{
+	size_t i;
+	char *pos, *clean = NULL;
+
+	if (*line == '#')
+		return (NULL);
+	pos = _strchr(line, '#');
+	if (pos)
 	{
-		cmd = _strtok_r(commands, "|", &ota);
-		while (cmd != NULL)
+		i = pos - line;
+		if (i > 0 && line[i - 1] == ' ')
 		{
-			/* printf("command3 is %s\n", cmd); */
-			ret = tokenizer(cmd);
-			if (ret == 0)
-				return (ret);
-			cmd = _strtok_r(NULL, "|", &ota);
+			clean = _strndup(line, i);
+			clean[i] = '\0';
+			addyarray(clean);
+			line = clean;
 		}
 	}
-	else
-	{
-		cmd = _strtok_r(commands, "|", &ota);
-		while (cmd != NULL)
-		{
-			/* printf("command4 is %s\n", cmd); */
-			ret = tokenizer(cmd);
-			if (((ret == 0) && (_strcmp(op, "||") == 0))
-			    || ((ret != 0) && (_strcmp(op, "&&") == 0)))
-				return (ret);
-			or_token = _strstr(commands, "||");
-			and_token = _strstr(commands, "&&");
-			if (or_token == NULL || and_token < or_token)
-				op = "&";
-			else
-				op = "|";
-			cmd = _strtok_r(NULL, op, &ota);
-		}
-	}
-	return (ret);
+	return (line);
 }

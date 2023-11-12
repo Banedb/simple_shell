@@ -66,10 +66,7 @@ char *myitoa(int num)
 
 /**
 *_puts - entry point
-*@str: character passed as an argument
-*Description: 'Write a function that prints a string,
-*followed by a new line, to stdout.
-*Prototype: void _puts(char *str)
+*@str: character passed as an arg
 */
 void _puts(char *str)
 {
@@ -81,4 +78,30 @@ void _puts(char *str)
 		str++;
 	}
 	(void)newLine;
+}
+
+/**
+ * _strstr - function locate
+ * @haystack: pointer to char
+ * @needle: pointer to char
+ *
+ * Return: 0
+ */
+
+char *_strstr(char *haystack, char *needle)
+{
+	char *result = haystack, *fneedle = needle;
+
+	while (*haystack)
+	{
+		while (*needle)
+			if (*haystack++ != *needle++)
+				break;
+		if (!*needle)
+			return (result);
+		needle = fneedle;
+		result++;
+		haystack = result;
+	}
+	return (0);
 }

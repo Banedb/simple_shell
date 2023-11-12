@@ -1,16 +1,5 @@
 #include "shell.h"
 /**
- * sig_h - handle reception of SIGINT signal
- * @signum: signal number
- */
-void sig_h(int signum)
-{
-	write(STDIN_FILENO, "\n$ ", 3);
-	(void) signum;
-}
-
-
-/**
  * addyarray - add address of given ptr to array of size < 100
  * @ptr: ptr whose address is stored in the array envaddys
  */
@@ -24,6 +13,46 @@ void addyarray(void *ptr)
 	else
 		write(2, message, _strlen(message));
 }
+
+/**
+ * comment - checks for comment in the line string
+ * @line: ...
+ *
+ * Return: string without comment either modified or unmodified
+ */
+
+char *comment(char *line)
+{
+	size_t i;
+	char *pos, *clean = NULL;
+
+	if (*line == '#')
+		return (NULL);
+	pos = _strchr(line, '#');
+	if (pos)
+	{
+		i = pos - line;
+		if (i > 0 && line[i - 1] == ' ')
+		{
+			clean = _strndup(line, i);
+			clean[i] = '\0';
+			addyarray(clean);
+			line = clean;
+		}
+	}
+	return (line);
+}
+
+/**
+ * sig_h - handle reception of SIGINT signal
+ * @signum: signal number
+ */
+void sig_h(int signum)
+{
+	write(STDIN_FILENO, "\n$ ", 3);
+	(void) signum;
+}
+
 
 /**
  * _realloc - h

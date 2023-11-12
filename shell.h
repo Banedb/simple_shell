@@ -48,7 +48,9 @@ int is_absolute_path(const char *path);
 /* parser.c */
 int run_input(void);
 int tokenizer(char *user_input);
-char *comment(char *line);
+int parser(char *line);
+int checkAND(char *commands);
+int checkOR(char *commands);
 
 /* path.c */
 char *_which(char *cmd);
@@ -74,6 +76,7 @@ char *_strchr(const char *str, int character);
 int _atoi(char *s);
 char *myitoa(int num);
 void _puts(char *str);
+char *_strstr(char *haystack, char *needle);
 
 /* run.c */
 int cmdexe(char **argv);
@@ -82,9 +85,11 @@ int extexec(char **argv, char **envp);
 int parent_proc(pid_t pid, char **argv);
 
 /*misc.c*/
+void addyarray(void *ptr);
+char *comment(char *line);
 void sig_h(int signum);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void addyarray(void *ptr);
+
 
 /* global variables */
 int addycount, exit_status, hist; /* history counter */
