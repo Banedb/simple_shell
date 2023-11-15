@@ -14,8 +14,29 @@
 
 extern char **environ;
 
+
+/**
+ * struct form - Used both for env and alias
+ * @name: key
+ * @val: value
+ */
+typedef struct form
+{
+	char *name;
+	char *val;
+} PAIR;
+
+
+/* alias.c */
+int alias_handler(char **args);
+char *find_alias(char **names, int *index);
+
+void list_alias(int i);
+void create_alias(char **names, char **values);
+
+
 /* builtins.c */
-char *_cd(const char *path);
+void _cd(char *path);
 int exitShell(char **argv);
 
 /* cleanup.c */
@@ -27,17 +48,23 @@ void free_args(char **args);
 char **_env(char **envStrings);
 int mysetenv(char *name, char *value);
 int myunsetenv(char *name);
-void printEnv(char **envp);
+int printEnv(char **envp);
 
 
 /* errors.c */
 int error_handler(char **argv, int err_no);
-void cd_error(char *args);
-void cd_error2(char *args);
+char *cd_error(char *args);
+void gen_cd_error(char *args, int num);
 void errexit(char *args);
 
 /*errcode.c */
 char *error_127(char **args);
+void ferror_127(char **args);
+
+/* file.c */
+int check_file(const char *path);
+void run_file(const char *filename);
+void varhelper(char **buff, char *str, int num, size_t *index);
 
 /* misc2.c */
 ssize_t _getline(char **lineptr, size_t *n, int fd);
@@ -56,7 +83,7 @@ int checkOR(char *commands);
 char *_which(char *cmd);
 char *build_path(char *cmd, char *patht);
 char *_getenv(const char *name);
-char *wunset(char *cmd);
+
 
 /* string.c */
 char *_strcat(char *dest, char *src);
@@ -89,31 +116,23 @@ void addyarray(void *ptr);
 char *comment(char *line);
 void sig_h(int signum);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char *repvar(char *source);
 
 
 /* global variables */
-int addycount, exit_status, hist; /* history counter */
-int builtpath, path_unset;
+int addycount, aliascount, exit_status, hist; /* history counter */
+int builtpath, path_unset, nullvar;
 char *user_input, *name; /* name of program */
 void *envaddys[100];
+
+/* vars.c */
+char *handle_vars(char *command);
 
 /* MACROS */
 #define MAXPATH_LEN 1024
 #define BUFFER_SIZE 1024
+#define MAX_ALIASES 5
 
-/**
- * struct env - Allocate memory for the environment variables
- * @key: environ variable
- * @val: environ varaible value.
- */
-typedef struct env
-{
-	char *key;
-	char *val;
-} env_t;
-
-/*Remove after*/
-
-
+PAIR aliases[MAX_ALIASES];
 
 #endif /*SHELL_H*/

@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * run_input - gets input from stdin using custom getline function
  *
@@ -12,13 +11,13 @@ int run_input(void)
 	ssize_t charc/* actual n of chars gl read from the input stream */;
 	char **envp, *prompt = "$ ";
 
-	hist = 0;
 	user_input = NULL;
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, prompt, 2);
 	while ((charc = _getline(&user_input, &n, STDIN_FILENO)) != -1)
 	{
 		builtpath = 0;
+		nullvar = 0;
 		path_unset = 1;/*assume PATH is unset*/
 		if (user_input[charc - 1] == '\n')
 			user_input[charc - 1] = '\0';
@@ -57,7 +56,7 @@ int tokenizer(char *command)
 {
 	int tcount, status = 0;
 	const char *delim = " \n\t&|";
-	char *cmd_copy = NULL, *token, **token_array, *tp, *tpa;
+	char *cmd_copy = NULL, *token, **token_array, *check, *tp, *tpa;
 
 	cmd_copy = _strdup(command);
 	if (cmd_copy != NULL)
@@ -78,10 +77,19 @@ int tokenizer(char *command)
 	for (tcount = 0; token != NULL; tcount++)
 	{ /* store each token in the token_array */
 		token_array[tcount] = _strdup(token);
+		check = handle_vars(token_array[tcount]);
+		if (check)
+		{
+			free(token_array[tcount]);
+			token_array[tcount] = check;
+		}
 		token = _strtok_r(NULL, delim, &tpa);
 	}
 	token_array[tcount] = NULL;
-	status = cmdexe(token_array);
+	if (nullvar == 0)
+		status = cmdexe(token_array);
+	else
+		write(1, "\n", 1);
 	free_args(token_array);
 	return (status);
 }
@@ -125,7 +133,7 @@ int parser(char *line)
 int checkAND(char *commands)
 {
 	int ret = 0;
-	char *cmd, *op = "h", *and_token = _strstr(commands, "&&");
+	char *cmd, *op = "", *and_token = _strstr(commands, "&&");
 	char *or_token = _strstr(commands, "||"), *ata;
 
 	if (or_token == NULL)
@@ -168,7 +176,7 @@ int checkAND(char *commands)
 int checkOR(char *commands)
 {
 	int ret = 0;
-	char *cmd, *op = "h", *and_token = _strstr(commands, "&&");
+	char *cmd, *op = "", *and_token = _strstr(commands, "&&");
 	char *or_token = _strstr(commands, "||"), *ota;
 
 	if (and_token == NULL)

@@ -23,8 +23,7 @@ int error_handler(char **argv, int err_no)
 		exit_status = -1;
 		break;
 	case 127:
-		errmsg
-			= error_127(argv);
+		errmsg = error_127(argv);
 		exit_status = 127;
 		break;
 	}
@@ -41,24 +40,24 @@ int error_handler(char **argv, int err_no)
 /**
  * cd_error - can't cd to specified location
  * @args: array of input command
- *
+ * Return: ..
  */
 
-void cd_error(char *args)
+char *cd_error(char *args)
 {
 	char *errmsg, *ic;
 	int len;
 
 	ic = myitoa(hist);
 	if (!ic)
-		return;
+		return (NULL);
 
 	len = _strlen(name) + _strlen(ic) + _strlen(args) + 23;
 	errmsg = malloc(sizeof(char) * (len + 1));
 	if (!errmsg)
 	{
 		free(ic);
-		return;
+		return (NULL);
 	}
 
 	_strcpy(errmsg, name);
@@ -69,21 +68,36 @@ void cd_error(char *args)
 	_strcat(errmsg, "\n");
 
 	free(ic);
-	write(STDERR_FILENO, errmsg, _strlen(errmsg));
-	free(errmsg);
-	free(args);
+	return (errmsg);
 }
 
 /**
- * cd_error2 - can't cd to specified location
+ * gen_cd_error  - can't cd to specified location
  * @args: array of input command
- *
+ * @err_no: ..
  */
 
-void cd_error2(char *args)
+void gen_cd_error(char *args, int err_no)
 {
-	write(2, "cd : error retrieving current directory\n", 42);
-	free(args);
+	char *errmsg = NULL;
+
+	switch (err_no)
+	{
+	case 2: /* ENOENT */
+		errmsg = cd_error(args);
+		/* exit_status = 2; */
+		break;
+	}
+
+	if (errmsg)
+	{
+		write(STDERR_FILENO, errmsg, _strlen(errmsg));
+		free(errmsg);
+	}
+	return;
+
+
+	/* write(2, "cd : error retrieving current directory\n", 42);  */
 }
 
 /**

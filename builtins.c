@@ -5,50 +5,47 @@
  *
  * Return: path to destination dir
  */
-char *_cd(const char *path)
+
+void _cd(char *path)
 {
-	char **envp, currentPath[MAXPATH_LEN], *prevd, *pathcopy, *env, *envcpy;
-	int j;
+	char *home = NULL, *prevd = getcwd(NULL, 0), *cwd = NULL, *pvd = NULL;
 
-	for (envp = environ; *envp != NULL; envp++)/*populate env var array*/
-	{
-		j = 0;
-		env = *envp;
-		while (env[j] != '=')
-			j++;
-		envcpy = _strndup(env, j);
-		if (!path)
+	addyarray(prevd);
+	if (path == NULL || _strcmp(path, "") == 0)
+	{/* If no path is provided, change to the home directory */
+		home = _getenv("HOME");
+		addyarray(home);
+		if (chdir(home) != 0)
+			return;
+		cwd = getcwd(NULL, 0);
+		addyarray(cwd);
+	}
+	else if (_strcmp(path, "-") == 0)
+	{/* If the path is "-", change to the previous directory */
+		pvd = _getenv("OLDPWD");
+		addyarray(pvd);
+		chdir(pvd);
+		cwd = getcwd(NULL, 0);
+		if (cwd)
+			addyarray(cwd);
+		write(1, cwd, _strlen(cwd));
+		write(1, "\n", 1);
+		if (pvd == NULL || chdir(pvd) == -1)
+			return;
+	}
+	else
+	{/* Change to the specified directory */
+		if (chdir(path) != 0)
 		{
-			if (_strcmp(envcpy, "HOME") == 0)
-			{
-				free(envcpy);
-				return (env + j + 1);
-			}
+			gen_cd_error(path, 2);
+			return;
 		}
-		else if (_strcmp(envcpy, "PWD") == 0)
-			prevd = env + j + 1;
-		free(envcpy);
-	}
-	pathcopy = _strdup(path);
-	if (_strcmp(pathcopy, "-") == 0)
-	{
-		path = prevd;
-		write(1, prevd, _strlen(prevd) + 1);
-		write(1, "\n", 2);
-	}
-	if (chdir(path) != 0)
-	{
-		cd_error(pathcopy);
-		return (NULL);
-	}
-	if (getcwd(currentPath, sizeof(currentPath)) == NULL)
-	{
-		cd_error2(pathcopy);
-		return (NULL);
-	}
-	return (pathcopy);
+		cwd = getcwd(NULL, 0);
+		addyarray(cwd);
+	} /* Overwrite existing value */
+	mysetenv("PWD", cwd);
+	mysetenv("OLDPWD", prevd);
 }
-
 
 /**
  * exitShell - exit cmd implementation

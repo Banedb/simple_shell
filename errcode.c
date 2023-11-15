@@ -11,12 +11,17 @@ char *error_127(char **args)
 	char *errmsg, *ic;
 	int len;
 
-	ic = myitoa(hist);
-	if (!ic)
-		return (NULL);
+	if (hist != 0)
+	{
+		ic = myitoa(hist);
+		if (!ic)
+			return (NULL);
+	}
+	else
+		ic = "0";
 
-	len = _strlen(name) + _strlen(ic) + _strlen(args[0]) + 16;
-	errmsg = malloc(sizeof(char) * (len + 1));
+	len = _strlen(name) + _strlen(ic) + _strlen(args[0]) + 17;
+	errmsg = malloc(sizeof(char) * (len));
 	if (!errmsg)
 	{
 		free(ic);
@@ -30,6 +35,50 @@ char *error_127(char **args)
 	_strcat(errmsg, args[0]);
 	_strcat(errmsg, ": not found\n");
 
-	free(ic);
+	if (hist)
+		free(ic);
 	return (errmsg);
+}
+
+/**
+ * ferror_127 - unable to open file
+ * @args: array of input cmd
+ */
+void ferror_127(char **args)
+{
+	char *errmsg, *ic;
+	int len;
+
+	if (hist != 0)
+	{
+		ic = myitoa(hist);
+		if (!ic)
+			return;
+	}
+	else
+		ic = "0";
+
+	len = _strlen(args[0]) + _strlen(ic) + _strlen(args[1]) + 17;
+	errmsg = malloc(sizeof(char) * (len));
+	if (!errmsg)
+	{
+		if (hist)
+			free(ic);
+		return;
+	}
+
+	_strcpy(errmsg, args[0]);
+	_strcat(errmsg, ": ");
+	_strcat(errmsg, ic);
+	_strcat(errmsg, ": ");
+	_strcat(errmsg, "Can't open ");
+	_strcat(errmsg, args[1]);
+	_strcat(errmsg, "\n");
+
+	if (hist)
+		free(ic);
+	write(STDERR_FILENO, errmsg, _strlen(errmsg));
+	free(errmsg);
+	exit_status = 127;
+	exit(exit_status);
 }

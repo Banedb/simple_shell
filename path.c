@@ -107,33 +107,3 @@ char *_getenv(const char *name)
 	}
 	return (NULL); /* No matching env*/
 }
-/**
- * wunset - execute if PATH is unset
- * @cmd: ..
- * Return: ..
- */
-char *wunset(char *cmd)
-{
-	char *custom_paths[] = {"/usr/local/sbin", "/usr/local/bin",
-				"/usr/sbin", "/usr/bin", "/sbin", "/bin"};
-	char *cmdpath;
-	int i;
-	struct stat buf;
-
-	for (i = 0; custom_paths[i] != NULL; i++)
-	{
-		cmdpath = build_path(cmd, custom_paths[i]);
-		if (stat(cmdpath, &buf) == 0)
-		{
-			builtpath = 1;
-			/*printf("cmdpath is %s", cmdpath);*/
-			return (cmdpath);
-		}
-		else
-		{
-			if (cmdpath)
-				free(cmdpath);
-		}
-	}
-	return (NULL);
-}

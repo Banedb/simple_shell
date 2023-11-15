@@ -98,51 +98,39 @@ int parent_proc(pid_t pid, char **argv)
 }
 /**
  * corexec - executes builtin commands
- * @argv: array of arguments passed to function
+ * @args: array of arguments passed to function
  *
  * Return: 0 (Success)
  */
 
-int corexec(char **argv)
-{
-	char *path;
-
-	if (_strcmp(argv[0], "exit") == 0)
-		return (exitShell(argv));
-	else if (_strcmp(argv[0], "cd") == 0)
+int corexec(char **args)
+{/* if (_strcmp(args[0], "alias") == 0) ;return (alias_handler(args)); */
+	if (_strcmp(args[0], "cd") == 0)
 	{
-		if (argv[1] == NULL)
-			path = _cd(argv[1]), chdir(path);
-		else
-		{
-			path = _cd(argv[1]);
-			if (path)
-				free(path);
-		}
+		_cd(args[1]);
 		return (0);
 	}
-	else if (_strcmp(argv[0], "env") == 0)
+	else if (_strcmp(args[0], "env") == 0)
+		return (printEnv(environ));
+	else if (_strcmp(args[0], "exit") == 0)
+		return (exitShell(args));
+	else if (_strcmp(args[0], "setenv") == 0)
 	{
-		printEnv(environ);
-		return (0);
-	}
-	else if (_strcmp(argv[0], "setenv") == 0)
-	{
-		if ((argv[1] == NULL) || (argv[2] == NULL) || (argv[3] != NULL))
+		if ((args[1] == NULL) || (args[2] == NULL) || (args[3] != NULL))
 		{
 			write(2, "usage: setenv VARIABLE VALUE\n", 29);
 			return (-1);
 		}
-		return (mysetenv(argv[1], argv[2]));
+		return (mysetenv(args[1], args[2]));
 	}
-	else if (_strcmp(argv[0], "unsetenv") == 0)
+	else if (_strcmp(args[0], "unsetenv") == 0)
 	{
-		if ((argv[1] == NULL) || (argv[2] != NULL))
+		if ((args[1] == NULL) || (args[2] != NULL))
 		{
 			write(2, "usage: unsetenv VARIABLE\n", 25);
 			return (-1);
 		}
-		return (myunsetenv(argv[1]));
+		return (myunsetenv(args[1]));
 	}
 	return (1);
 }

@@ -8,14 +8,14 @@
 
 char **_env(char **envStrings)
 {
-	env_t *envs = NULL;
+	PAIR *envs = NULL;
 	int envCount = 0, i = 0, j;
 	char **envp = environ, *env;
 
 	/* get number of environ variables */
 	for (; *envp != NULL; envp++)
 		envCount++;
-	envs = malloc(sizeof(struct env) * envCount);
+	envs = malloc(sizeof(struct form) * envCount);
 	if (envs == NULL)
 	{
 		(error_handler(NULL, 50));
@@ -30,7 +30,7 @@ char **_env(char **envStrings)
 
 		while (env[j] != '=')
 			j++;
-		envs[i].key = _strndup(env, j);
+		envs[i].name = _strndup(env, j);
 		envs[i].val = env + j + 1;
 		envp++;
 	}
@@ -43,7 +43,7 @@ char **_env(char **envStrings)
 	/* set last element of array: NULL*/
 	envStrings[envCount] = NULL;
 	for (i = 0; i < envCount; i++)
-		free(envs[i].key);
+		free(envs[i].name);
 	free(envs);
 
 	return (envStrings);
@@ -126,9 +126,10 @@ int myunsetenv(char *name)
 /**
  * printEnv - print environment variables
  * @envp: pointer to environment variables
+ * Return: Always 0
  */
 
-void printEnv(char **envp)
+int printEnv(char **envp)
 {
 	int i = 0;
 
@@ -138,4 +139,5 @@ void printEnv(char **envp)
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
+	return (0);
 }
