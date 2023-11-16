@@ -68,8 +68,6 @@ int tokenizer(char *command)
 	}
 	else
 		return (-1);
-
-	/* allocate space to hold the array of strings */
 	token_array = malloc(sizeof(char *) * (tcount + 1));
 	if (!token_array)
 		return (error_handler(NULL, 50));

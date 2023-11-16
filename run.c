@@ -7,9 +7,18 @@
  */
 int cmdexe(char **args)
 {
-	char **envp = environ;
-	int bic;
+	char **envp = environ, *check;
+	int bic, i;
 
+	for (i = 0; args[i] != NULL; i++)
+	{
+		check = find_alias(args[i], NULL);
+		if (check && (_strcmp(args[0], "alias") != 0))
+		{
+			free(args[i]);
+			args[i] = _strdup(check);
+		}
+	}
 	if (args && args[0])
 	{
 		bic = corexec(args);
@@ -104,7 +113,12 @@ int parent_proc(pid_t pid, char **argv)
  */
 
 int corexec(char **args)
-{/* if (_strcmp(args[0], "alias") == 0) ;return (alias_handler(args)); */
+{
+	if (_strcmp(args[0], "alias") == 0)
+	{
+		alias_handler(args);
+		return (0);
+	}
 	if (_strcmp(args[0], "cd") == 0)
 	{
 		_cd(args[1]);

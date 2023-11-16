@@ -28,11 +28,11 @@ typedef struct form
 
 
 /* alias.c */
-int alias_handler(char **args);
-char *find_alias(char **names, int *index);
+void alias_handler(char **args);
+char *find_alias(char *names, int *index);
 
 void list_alias(int i);
-void create_alias(char **names, char **values);
+void create_alias(char *names, char *values);
 
 
 /* builtins.c */
@@ -131,7 +131,7 @@ char *handle_vars(char *command);
 /* MACROS */
 #define MAXPATH_LEN 1024
 #define BUFFER_SIZE 1024
-#define MAX_ALIASES 5
+#define MAX_ALIASES 10
 
 PAIR aliases[MAX_ALIASES];
 
