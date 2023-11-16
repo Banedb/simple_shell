@@ -22,10 +22,13 @@ int check_file(const char *path)
 void run_file(const char *filename)
 {
 	char *line = NULL, **envp;
-	int fd = open(filename, O_RDONLY), count, status = 0;
+	int fd, count, status = 0;
 	size_t n = 0;
 	ssize_t charc;
 
+	if (!filename)
+		return;
+	fd =  open(filename, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening file");
